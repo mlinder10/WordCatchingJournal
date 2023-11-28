@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
       );
     const followingArray = JSON.parse(following);
     const rs = await client.execute({
-      sql: "select * from posts where uid in (?) orderby createdAt desc",
+      sql: "select * from posts where uid in (?) order by createdAt desc",
       args: [followingArray],
     });
     return NextResponse.json(Post.fromRows(rs.rows), { status: 200 });

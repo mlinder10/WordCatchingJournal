@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   }
   try {
     const rs = await client.execute({
-      sql: "select * from posts where uid = ? orderby createdAt desc",
+      sql: "select * from posts where uid = ? order by createdAt desc",
       args: [uid],
     });
     return NextResponse.json(Post.fromRows(rs.rows), { status: 200 });
