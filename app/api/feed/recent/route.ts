@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   try {
     const rs = await client.execute({
-      sql: "select * from posts",
+      sql: "select * from posts order by createdAt desc",
       args: [],
     });
     return NextResponse.json(Post.fromRows(rs.rows), { status: 200 });

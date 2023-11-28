@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   }
   try {
     const postRs = await client.execute({
-      sql: "select * from posts where word like ? or definition like ?",
+      sql: "select * from posts where word like ? or definition like ? orderby createdAt desc",
       args: [`%${search}%`, `%${search}%`],
     });
     const userRs = await client.execute({
