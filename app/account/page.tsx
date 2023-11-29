@@ -8,11 +8,9 @@ import ProfileImage from "@/components/ProfileImage";
 import Link from "next/link";
 import { VscSettings } from "react-icons/vsc";
 import LoadingView from "@/components/LoadingView";
-import { useRouter } from "next/navigation";
 
 export default function Account() {
   const { user } = useContext(UserContext);
-  const router = useRouter();
   const [posts, setPosts] = useState<Post[] | "loading" | "error" | "empty">(
     "loading"
   );
@@ -66,7 +64,11 @@ export default function Account() {
         <div className={styles.stats}>
           <div>
             <p>Posts</p>
-            <p>{posts.length}</p>
+            <p>
+              {posts === "loading" || posts === "error" || posts === "empty"
+                ? 0
+                : posts.length}
+            </p>
           </div>
           <Link
             href={{

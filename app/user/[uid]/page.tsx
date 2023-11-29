@@ -100,7 +100,11 @@ export default function User({ params }: UserProps) {
         <div className={styles.stats}>
           <div>
             <p>Posts</p>
-            <p>{posts.length}</p>
+            <p>
+              {posts === "loading" || posts === "error" || posts === "empty"
+                ? 0
+                : posts.length}
+            </p>
           </div>
           <Link
             href={{

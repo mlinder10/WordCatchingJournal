@@ -49,6 +49,10 @@
   font-size: 1.1rem;
 }
 
+.stats p {
+  text-align: center;
+}
+
 .posts {
   display: flex;
   flex-direction: column;
