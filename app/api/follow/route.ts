@@ -33,9 +33,15 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function PATCH(request: NextRequest) {
   const body = await request.json();
   const { user, pageUser } = body;
+  if (!user || !pageUser) {
+    return NextResponse.json(
+      { message: "Missing user or pageUser" },
+      { status: 400 }
+    );
+  }
   try {
     if (user.following.includes(pageUser.uid)) {
       await client.execute({

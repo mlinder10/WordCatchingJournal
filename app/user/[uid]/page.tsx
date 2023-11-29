@@ -75,7 +75,7 @@ export default function User({ params }: UserProps) {
     if (pageUser === "loading" || pageUser === "error" || user === null) return;
     try {
       const response = await fetch("/api/follow", {
-        method: "POST",
+        method: "PATCH",
         body: JSON.stringify({ user, pageUser }),
         headers: {
           "Content-Type": "application/json",

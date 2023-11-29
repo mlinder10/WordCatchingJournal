@@ -38,7 +38,7 @@
   gap: 1ch
 }
 
-.follow {
+.profile-info-text .follow {
   background-color: var(--accent);
   padding: .2rem .5rem;
   border-radius: 5px;

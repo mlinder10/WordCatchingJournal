@@ -33,7 +33,7 @@ export async function PATCH(request: NextRequest) {
       sql: "select * from posts where pid = ?",
       args: [pid],
     });
-    return NextResponse.json(Post.fromRow(postRs.rows[0]), { status: 200 });
+    return NextResponse.json(Post.fromRow(postRs.rows[0]), { status: 202 });
   } catch (err: any) {
     console.error(err?.message);
     return NextResponse.json({ message: err?.message }, { status: 500 });
