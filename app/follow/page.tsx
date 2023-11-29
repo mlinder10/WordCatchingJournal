@@ -1,8 +1,7 @@
 "use client";
 import ProfileImage from "@/components/ProfileImage";
 import styles from "./follow.module.css";
-import { useRouter } from "next/navigation";
-import { useRouter as useNextRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { VscArrowLeft } from "react-icons/vsc";
 import { User } from "@/config/types";
 import { useEffect, useState } from "react";
@@ -11,14 +10,10 @@ import Link from "next/link";
 
 export default function Follow() {
   const router = useRouter();
-  const nextRouter = useNextRouter();
-  const user = JSON.parse(
-    typeof nextRouter.query.user === "string" ? nextRouter.query.user : "null"
-  ) as User | null;
-  const [type, setType] = useState<string>(
-    typeof nextRouter.query.type === "string"
-      ? nextRouter.query.type
-      : "following"
+  const params = useSearchParams();
+  const user = (JSON.parse(params.get("user") || "null") as User) || null;
+  const [type, setType] = useState<"followers" | "following">(
+    (params.get("type") as "following") || "follwoing" || "followers"
   );
   const [followers, setFollowers] = useState<User[] | "loading" | "error">(
     "loading"
