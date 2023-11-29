@@ -42,7 +42,7 @@ export default function Follow() {
       }
     }
     fetchUsers();
-  }, [user]);
+  }, []);
 
   if (user === null) return <></>;
 
