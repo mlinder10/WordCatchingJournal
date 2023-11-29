@@ -1,3 +1,4 @@
+"use client"
 import ProfileImage from "@/components/ProfileImage";
 import styles from "./follow.module.css";
 import { useRouter } from "next/navigation";
