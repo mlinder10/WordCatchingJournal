@@ -8,9 +8,11 @@ import ProfileImage from "@/components/ProfileImage";
 import Link from "next/link";
 import { VscSettings } from "react-icons/vsc";
 import LoadingView from "@/components/LoadingView";
+import { useRouter } from "next/navigation";
 
 export default function Account() {
   const { user } = useContext(UserContext);
+  const router = useRouter();
   const [posts, setPosts] = useState<Post[] | "loading" | "error" | "empty">(
     "loading"
   );
@@ -21,6 +23,7 @@ export default function Account() {
       setPosts("loading");
       try {
         const response = await fetch(`/api/posts?uid=${user.uid}`);
+        if (!response.ok) throw Error();
         const data = await response.json();
         if (data.length === 0) return setPosts("empty");
         setPosts(data);
@@ -65,14 +68,24 @@ export default function Account() {
             <p>Posts</p>
             <p>{posts.length}</p>
           </div>
-          <div>
+          <Link
+            href={{
+              pathname: "/follow",
+              query: { type: "following", user: JSON.stringify(user) },
+            }}
+          >
             <p>Following</p>
             <p>{user.following.length}</p>
-          </div>
-          <div>
+          </Link>
+          <Link
+            href={{
+              pathname: "/follow",
+              query: { type: "followers", user: JSON.stringify(user) },
+            }}
+          >
             <p>Followers</p>
             <p>{user.followers.length}</p>
-          </div>
+          </Link>
         </div>
       </div>
       <div className={styles.posts}>

@@ -21,6 +21,7 @@ export default function Search() {
       setResults("loading");
       try {
         const response = await fetch(`/api/search?search=${search}`);
+        if (!response.ok) throw Error();
         const data = await response.json();
         if (data.users.length === 0 && data.posts.length === 0) {
           return setResults("error");

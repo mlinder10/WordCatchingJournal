@@ -8,6 +8,7 @@ import { VscArrowLeft } from "react-icons/vsc";
 import styles from "./user.module.css";
 import PostCell from "@/components/Post";
 import ProfileImage from "@/components/ProfileImage";
+import Link from "next/link";
 
 type UserProps = {
   params: {
@@ -32,6 +33,7 @@ export default function User({ params }: UserProps) {
       setPosts("loading");
       try {
         const response = await fetch(`/api/posts?uid=${params.uid}`);
+        if (!response.ok) throw Error();
         const data = await response.json();
         if (data.length === 0) return setPosts("empty");
         setPosts(data);
@@ -50,6 +52,7 @@ export default function User({ params }: UserProps) {
           uid: params.uid,
         },
       });
+      if (!response.ok) throw Error();
       const data = await response.json();
       setPageUser(data);
     }
@@ -99,14 +102,24 @@ export default function User({ params }: UserProps) {
             <p>Posts</p>
             <p>{posts.length}</p>
           </div>
-          <div>
+          <Link
+            href={{
+              pathname: "/follow",
+              query: { type: "following", user: JSON.stringify(pageUser) },
+            }}
+          >
             <p>Following</p>
             <p>{pageUser.following.length}</p>
-          </div>
-          <div>
+          </Link>
+          <Link
+            href={{
+              pathname: "/follow",
+              query: { type: "followers", user: JSON.stringify(pageUser) },
+            }}
+          >
             <p>Followers</p>
             <p>{pageUser.followers.length}</p>
-          </div>
+          </Link>
         </div>
       </div>
       <div className={styles.posts}>

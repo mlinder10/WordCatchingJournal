@@ -29,6 +29,7 @@ export default function Post() {
         const response = await fetch(
           `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
         );
+        if (!response.ok) throw Error();
         const data = await response.json();
         setDefinitions(parseDefinitions(data));
       } catch (err: any) {

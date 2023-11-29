@@ -20,12 +20,12 @@ export default function Feed() {
         const response = await fetch(
           `/api/feed/${type}?following=${JSON.stringify(user?.following)}`
         );
+        if (!response.ok) throw Error()
         const data = await response.json();
         if (data.length === 0) return setPosts("empty");
         setPosts(data);
       } catch (err: any) {
         setPosts("error");
-        console.error(err?.message);
       }
     }
 

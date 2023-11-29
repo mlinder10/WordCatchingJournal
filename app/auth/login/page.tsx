@@ -18,6 +18,7 @@ export default function Login() {
           password: password,
         },
       });
+      if (!response.ok) throw Error();
       let user = await response.json();
       setUser(user);
     } catch (err: any) {
