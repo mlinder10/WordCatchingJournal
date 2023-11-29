@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import ProfileImage from "@/components/ProfileImage";
 import styles from "./follow.module.css";
 import { useRouter } from "next/navigation";
@@ -12,14 +12,14 @@ import Link from "next/link";
 export default function Follow() {
   const router = useRouter();
   const nextRouter = useNextRouter();
-  if (
-    typeof nextRouter.query.user !== "string" ||
-    typeof nextRouter.query.type !== "string"
-  ) {
-    return <></>;
-  }
-  const user = JSON.parse(nextRouter.query.user) as User;
-  const [type, setType] = useState<string>(nextRouter.query.type);
+  const user = JSON.parse(
+    typeof nextRouter.query.user === "string" ? nextRouter.query.user : "null"
+  ) as User | null;
+  const [type, setType] = useState<string>(
+    typeof nextRouter.query.type === "string"
+      ? nextRouter.query.type
+      : "following"
+  );
   const [followers, setFollowers] = useState<User[] | "loading" | "error">(
     "loading"
   );
@@ -29,6 +29,7 @@ export default function Follow() {
 
   useEffect(() => {
     async function fetchUsers() {
+      if (user === null) return;
       setFollowers("loading");
       setFollowing("loading");
       try {
@@ -47,6 +48,8 @@ export default function Follow() {
     }
     fetchUsers();
   }, [user]);
+
+  if (user === null) return <></>;
 
   return (
     <main>
