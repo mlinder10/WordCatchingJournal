@@ -44,27 +44,27 @@ export async function PATCH(request: NextRequest) {
   }
   try {
     if (user.following.includes(pageUser.uid)) {
-      await client.execute({
-        sql: "update users set following = array_remove(following, ?) where uid = ?",
-        args: [pageUser.uid, user.uid],
-      });
       user.following.filter((uid: string) => uid !== pageUser.uid);
-      await client.execute({
-        sql: "update users set followers = array_remove(followers, ?) where uid = ?",
-        args: [user.uid, pageUser.uid],
-      });
       pageUser.followers.filter((uid: string) => uid !== user.uid);
+      await client.execute({
+        sql: "update users set following = ? where uid = ?",
+        args: [JSON.stringify(user.following), user.uid],
+      });
+      await client.execute({
+        sql: "update users set followers = ? where uid = ?",
+        args: [JSON.stringify(pageUser.followers), pageUser.uid],
+      });
     } else {
-      await client.execute({
-        sql: "update users set following = array_append(following, ?) where uid = ?",
-        args: [pageUser.uid, user.uid],
-      });
       user.following.push(pageUser.uid);
-      await client.execute({
-        sql: "update users set followers = array_append(followers, ?) where uid = ?",
-        args: [user.uid, pageUser.uid],
-      });
       pageUser.followers.push(user.uid);
+      await client.execute({
+        sql: "update users set following = ? where uid = ?",
+        args: [JSON.stringify(user.following), user.uid],
+      });
+      await client.execute({
+        sql: "update users set followers = ? where uid = ?",
+        args: [JSON.stringify(pageUser.followers), pageUser.uid],
+      });
     }
     return NextResponse.json({ user, pageUser }, { status: 202 });
   } catch (err: any) {
