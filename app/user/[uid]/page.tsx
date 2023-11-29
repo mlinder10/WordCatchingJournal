@@ -17,7 +17,7 @@ type UserProps = {
 };
 
 export default function User({ params }: UserProps) {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const router = useRouter();
   if (user?.uid === params.uid) redirect("/account");
   const [pageUser, setPageUser] = useState<UserType | "loading" | "error">(
@@ -81,7 +81,10 @@ export default function User({ params }: UserProps) {
           "Content-Type": "application/json",
         },
       });
-      console.log(response);
+      if (!response.ok) throw Error();
+      const data = await response.json();
+      setUser(data.user);
+      setPageUser(data.pageUser);
     } catch (err: any) {
       console.error(err?.message);
     }
@@ -107,13 +110,13 @@ export default function User({ params }: UserProps) {
           <ProfileImage url={pageUser.profileImageUrl} size={60} />
           <div className={styles["profile-info-text"]}>
             <h1>{pageUser.username}</h1>
-            <button onClick={follow}>
+            <button className={styles.follow} onClick={follow}>
               {user?.following.includes(params.uid) ? "Unfollow" : "Follow"}
             </button>
-            <button onClick={() => router.back()}>
+            {/* <button onClick={() => router.back()}>
               <VscArrowLeft />
               <span>Back</span>
-            </button>
+            </button> */}
           </div>
         </div>
         <div className={styles.stats}>
