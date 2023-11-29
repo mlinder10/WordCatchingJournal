@@ -113,10 +113,6 @@ export default function User({ params }: UserProps) {
             <button className={styles.follow} onClick={follow}>
               {user?.following.includes(params.uid) ? "Unfollow" : "Follow"}
             </button>
-            {/* <button onClick={() => router.back()}>
-              <VscArrowLeft />
-              <span>Back</span>
-            </button> */}
           </div>
         </div>
         <div className={styles.stats}>

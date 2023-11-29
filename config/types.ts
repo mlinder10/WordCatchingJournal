@@ -68,7 +68,7 @@ export class Post {
   email: string;
   username: string;
   profileImageUrl: string;
-  createdAt: Date;
+  createdAt: string;
   likes: string[];
 
   constructor(
@@ -79,7 +79,7 @@ export class Post {
     email: string,
     username: string,
     profileImageUrl: string,
-    createdAt: Date,
+    createdAt: string,
     likes: string[]
   ) {
     this.pid = pid;
@@ -102,7 +102,7 @@ export class Post {
       row.email,
       row.username,
       row.profileImageUrl,
-      new Date(row.createdAt),
+      row.createdAt,
       JSON.parse(row.likes)
     );
   }

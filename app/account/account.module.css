@@ -41,16 +41,12 @@
 }
 
 .stats > div
-.stats a {
+.profile-info-text .stats a {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   align-items: center;
   font-size: 1.1rem;
-}
-
-.stats p {
-  text-align: center;
 }
 
 .posts {

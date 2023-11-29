@@ -1,15 +1,13 @@
 "use client";
 import ProfileImage from "@/components/ProfileImage";
 import styles from "./follow.module.css";
-import { useRouter, useSearchParams } from "next/navigation";
-import { VscArrowLeft } from "react-icons/vsc";
+import { useSearchParams } from "next/navigation";
 import { User } from "@/config/types";
 import { useEffect, useState } from "react";
 import LoadingView from "@/components/LoadingView";
 import Link from "next/link";
 
 export default function Follow() {
-  const router = useRouter();
   const params = useSearchParams();
   const user = (JSON.parse(params.get("user") || "null") as User) || null;
   const [type, setType] = useState<"followers" | "following">(
@@ -53,10 +51,6 @@ export default function Follow() {
           <ProfileImage url={user.profileImageUrl} size={60} />
           <div className={styles["profile-info-text"]}>
             <h1>{user.username}</h1>
-            <button onClick={() => router.back()}>
-              <VscArrowLeft />
-              <span>Back</span>
-            </button>
           </div>
         </div>
         <div className={styles.buttons}>
