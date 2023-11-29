@@ -17,8 +17,8 @@ export default function Sidenav() {
       <div className={styles.logo}>
         <Image src="/logo.png" alt="logo" width={80} height={80} />
       </div>
-      <Link href="/feed">
-        <div className={pathname === "/feed" ? styles.active : ""}>
+      <Link href="/">
+        <div className={pathname === "/" ? styles.active : ""}>
           <FaNewspaper />
           <p>Feed</p>
         </div>

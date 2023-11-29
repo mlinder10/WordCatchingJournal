@@ -52,7 +52,7 @@ export default function UserProvider({ children }: UserProviderProps) {
       localUser !== null &&
       (pathname === "/auth/login" || pathname === "/auth/register")
     ) {
-      router.replace("/feed");
+      router.replace("/");
     }
   }, [user, pathname, router]);
 

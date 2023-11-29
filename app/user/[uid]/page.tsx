@@ -22,16 +22,21 @@ export default function User({ params }: UserProps) {
   const [pageUser, setPageUser] = useState<UserType | "loading" | "error">(
     "loading"
   );
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[] | "loading" | "error" | "empty">(
+    "loading"
+  );
 
   useEffect(() => {
     async function fetchPosts() {
       if (pageUser === "error" || pageUser === "loading") return;
+      setPosts("loading");
       try {
         const response = await fetch(`/api/posts?uid=${params.uid}`);
         const data = await response.json();
+        if (data.length === 0) return setPosts("empty");
         setPosts(data);
       } catch (err: any) {
+        setPosts("error");
         console.error(err?.message);
       }
     }
@@ -52,6 +57,7 @@ export default function User({ params }: UserProps) {
   }, [params.uid]);
 
   function updatePosts(post: Post) {
+    if (posts === "loading" || posts === "error" || posts === "empty") return;
     let newPosts = [...posts];
     for (let i = 0; i < newPosts.length; i++) {
       if (newPosts[i].pid === post.pid) {
@@ -104,14 +110,20 @@ export default function User({ params }: UserProps) {
         </div>
       </div>
       <div className={styles.posts}>
-        {posts.map((post) => (
-          <PostCell
-            key={post.pid}
-            post={post}
-            user={pageUser}
-            updatePosts={updatePosts}
-          />
-        ))}
+        {posts === "loading" && <LoadingView />}
+        {posts === "error" && <p>Error fetching posts</p>}
+        {posts === "empty" && <p>No posts yet</p>}
+        {posts !== "loading" &&
+          posts !== "error" &&
+          posts !== "empty" &&
+          posts.map((post) => (
+            <PostCell
+              key={post.pid}
+              post={post}
+              user={pageUser}
+              updatePosts={updatePosts}
+            />
+          ))}
       </div>
     </main>
   );

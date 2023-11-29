@@ -1,95 +1,82 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+import PostCell from "@/components/Post";
+import { UserContext } from "@/components/userProvider";
+import { Post } from "@/config/types";
+import { useContext, useEffect, useState } from "react";
+import styles from "./feed.module.css";
+import LoadingView from "@/components/LoadingView";
 
-export default function Home() {
+export default function Feed() {
+  const { user } = useContext(UserContext);
+  const [type, setType] = useState<"recent" | "following">("recent");
+  const [posts, setPosts] = useState<Post[] | "loading" | "error" | "empty">(
+    "empty"
+  );
+
+  useEffect(() => {
+    async function fetchFeed() {
+      setPosts("loading");
+      try {
+        const response = await fetch(
+          `/api/feed/${type}?following=${JSON.stringify(user?.following)}`
+        );
+        const data = await response.json();
+        if (data.length === 0) return setPosts("empty");
+        setPosts(data);
+      } catch (err: any) {
+        setPosts("error");
+        console.error(err?.message);
+      }
+    }
+
+    fetchFeed();
+  }, [type, user?.following]);
+
+  function updatePosts(post: Post) {
+    if (posts === "loading" || posts === "error" || posts === "empty") return;
+    let newPosts = [...posts];
+    for (let i = 0; i < newPosts.length; i++) {
+      if (newPosts[i].pid === post.pid) {
+        newPosts[i] = post;
+        break;
+      }
+    }
+    setPosts(newPosts);
+  }
+
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
+      <h1>Feed</h1>
+      <div className={styles.buttons}>
+        <p
+          className={type === "recent" ? styles.active : ""}
+          onClick={() => setType("recent")}
+        >
+          Recent
         </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
+        <p
+          className={type === "following" ? styles.active : ""}
+          onClick={() => setType("following")}
+        >
+          Following
+        </p>
+      </div>
+      <div className={styles.posts}>
+        {posts === "loading" && <LoadingView />}
+        {posts === "error" && <p>Error fetching posts</p>}
+        {posts === "empty" && <p>No posts</p>}
+        {posts !== "loading" &&
+          posts !== "error" &&
+          posts !== "empty" &&
+          posts.map((post) => (
+            <PostCell
+              key={post.pid}
+              post={post}
+              user={user}
+              updatePosts={updatePosts}
             />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+          ))}
       </div>
     </main>
-  )
+  );
 }
