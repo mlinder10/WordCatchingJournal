@@ -71,6 +71,22 @@ export default function User({ params }: UserProps) {
     setPosts(newPosts);
   }
 
+  async function follow() {
+    if (pageUser === "loading" || pageUser === "error" || user === null) return;
+    try {
+      const response = await fetch("/api/follow", {
+        method: "POST",
+        body: JSON.stringify({ user, pageUser }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response);
+    } catch (err: any) {
+      console.error(err?.message);
+    }
+  }
+
   if (pageUser === "loading") return <LoadingView />;
 
   if (pageUser === "error")
@@ -91,6 +107,9 @@ export default function User({ params }: UserProps) {
           <ProfileImage url={pageUser.profileImageUrl} size={60} />
           <div className={styles["profile-info-text"]}>
             <h1>{pageUser.username}</h1>
+            <button onClick={follow}>
+              {user?.following.includes(params.uid) ? "Unfollow" : "Follow"}
+            </button>
             <button onClick={() => router.back()}>
               <VscArrowLeft />
               <span>Back</span>
