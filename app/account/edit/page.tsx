@@ -26,7 +26,7 @@ export default function Edit() {
   async function uploadImageToCloudinary() {
     if (!image || !user) return;
     try {
-      const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
+      const url = `https://api.cloudinary.com/v1_1/dfh4arkeh/upload`;
       const data = new FormData();
       data.append("file", image);
       data.append("upload_preset", "kfffjhdp");
