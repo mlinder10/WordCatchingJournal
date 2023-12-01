@@ -34,13 +34,7 @@ export default function Feed() {
 
   function updatePosts(post: Post) {
     if (posts === "loading" || posts === "error" || posts === "empty") return;
-    let newPosts = [...posts];
-    for (let i = 0; i < newPosts.length; i++) {
-      if (newPosts[i].pid === post.pid) {
-        newPosts[i] = post;
-        break;
-      }
-    }
+    const newPosts = posts.map(p => p.pid === post.pid ? post : p);
     setPosts(newPosts);
   }
 
@@ -65,9 +59,7 @@ export default function Feed() {
         {posts === "loading" && <LoadingView />}
         {posts === "error" && <p>Error fetching posts</p>}
         {posts === "empty" && <p>No posts</p>}
-        {posts !== "loading" &&
-          posts !== "error" &&
-          posts !== "empty" &&
+        {Array.isArray(posts) &&
           posts.map((post) => (
             <PostCell
               key={post.pid}

@@ -7,21 +7,17 @@ export function parseDefinitions(
     return [];
   }
 
-  let parsedDefinitions: Definition[] = [];
-  for (const rootDefinition of definitions) {
-    for (const meaning of rootDefinition.meanings) {
-      for (const definition of meaning.definitions) {
-        parsedDefinitions.push({
-          word: rootDefinition.word,
-          definition: definition.definition,
-          example: definition.example,
-          synonyms: definition.synonyms,
-          antonyms: definition.antonyms,
-          origin: rootDefinition.origin,
-          partOfSpeech: meaning.partOfSpeech,
-        });
-      }
-    }
-  }
-  return parsedDefinitions;
+  return definitions.flatMap((rootDefinition) =>
+    rootDefinition.meanings.flatMap((meaning) =>
+      meaning.definitions.map((definition) => ({
+        word: rootDefinition.word,
+        definition: definition.definition,
+        example: definition.example,
+        synonyms: definition.synonyms,
+        antonyms: definition.antonyms,
+        origin: rootDefinition.origin,
+        partOfSpeech: meaning.partOfSpeech,
+      }))
+    )
+  );
 }

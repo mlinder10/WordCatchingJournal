@@ -32,6 +32,7 @@
   display: flex;
   gap: 1ch;
   font-size: .8rem;
+  color: var(--accent);
 }
 
 .stats {
@@ -40,8 +41,8 @@
   gap: 4rem;
 }
 
-.stats > div
-.profile-info-text .stats a {
+.stats > div,
+.stats a {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;

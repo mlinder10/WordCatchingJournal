@@ -5,3 +5,19 @@
   flex-direction: column;
   gap: 3rem;
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.logout {
+  background-color: transparent;
+  border: none;
+  color: var(--accent);
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
