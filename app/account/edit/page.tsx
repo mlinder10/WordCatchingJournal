@@ -51,7 +51,7 @@ export default function Edit() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user }),
+        body: JSON.stringify({ user: newUser }),
       });
     } catch (err: any) {
       console.error(err?.message);
