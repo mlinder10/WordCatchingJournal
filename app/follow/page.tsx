@@ -45,7 +45,7 @@ export default function Follow() {
   if (user === null) return <></>;
 
   return (
-    <main>
+    <main className={styles.main}>
       <div className={styles.info}>
         <div className={styles["profile-info"]}>
           <ProfileImage url={user.profileImageUrl} size={60} />
@@ -54,58 +54,64 @@ export default function Follow() {
           </div>
         </div>
         <div className={styles.buttons}>
-          <button
+          <div
             className={type === "following" ? styles.active : undefined}
             onClick={() => setType("following")}
           >
-            Following
-          </button>
-          <button
+            <p>Following</p>
+            <p>{user.following.length}</p>
+          </div>
+          <div
             className={type === "followers" ? styles.active : undefined}
             onClick={() => setType("followers")}
           >
-            Followers
-          </button>
+            <p>Followers</p>
+            <p>{user.followers.length}</p>
+          </div>
         </div>
       </div>
       <div className={styles.container}>
-        <Followers type={type} followers={followers} />
-        <Following type={type} following={following} />
+        {type === "followers" ? (
+          <FollowList followList={followers} />
+        ) : (
+          <FollowList followList={following} />
+        )}
       </div>
     </main>
   );
 }
 
-type FollowersProps = {
-  type: string;
-  followers: User[] | "loading" | "error";
+type FollowListProps = {
+  followList: User[] | "loading" | "error";
 };
 
-function Followers({ type, followers }: FollowersProps) {
-  if (type !== "followers") return <></>;
-  if (followers === "loading") return <LoadingView />;
-  if (followers === "error") return <p>Error fetching followers</p>;
-  return followers.map((user) => (
-    <Link href={`/user/${user.uid}`} className={styles.user} key={user.uid}>
-      <ProfileImage url={user.profileImageUrl} size={40} />
-      <p>{user.username}</p>
-    </Link>
-  ));
+function FollowList({ followList }: FollowListProps) {
+  if (followList === "loading") return <LoadingView />;
+  if (followList === "error") return <p>Error fetching users</p>;
+  return followList.map((user) => <UserCell key={user.uid} user={user} />);
 }
 
-type FollowingProps = {
-  type: string;
-  following: User[] | "loading" | "error";
+type UserCellProps = {
+  user: User;
 };
 
-function Following({ type, following }: FollowingProps) {
-  if (type !== "following") return <></>;
-  if (following === "loading") return <LoadingView />;
-  if (following === "error") return <p>Error fetching following</p>;
-  return following.map((user) => (
+function UserCell({ user }: UserCellProps) {
+  return (
     <Link href={`/user/${user.uid}`} className={styles.user} key={user.uid}>
-      <ProfileImage url={user.profileImageUrl} size={40} />
-      <p>{user.username}</p>
+      <div className={styles["user-info"]}>
+        <ProfileImage url={user.profileImageUrl} size={40} />
+        <p className={styles.username}>{user.username}</p>
+      </div>
+      <div className={styles["user-stats"]}>
+        <div>
+          <p>Following</p>
+          <p className={styles.following}>{user.following.length}</p>
+        </div>
+        <div>
+          <p>Followers</p>
+          <p className={styles.followers}>{user.followers.length}</p>
+        </div>
+      </div>
     </Link>
-  ));
+  );
 }

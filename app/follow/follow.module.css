@@ -1,0 +1,96 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  gap: 2rem;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 2rem;
+  padding-top: 4rem;
+  align-items: flex-end;
+  gap: 6rem;
+}
+
+.profile-info {
+  display: flex;
+  gap: 1rem;
+}
+
+.buttons {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.buttons div {
+  font-size: 1rem;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 1rem;
+  gap: .5rem;
+}
+
+.buttons div::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  translate: -50%;
+  width: 0%;
+  height: 1px;
+  background-color: var(--accent);
+  transition: 0.3s ease-in-out;
+}
+
+.buttons .active::after {
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-inline: 2rem;
+  padding-top: 4rem;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-block: 1rem;
+  border-bottom: thin solid var(--background-secondary);
+  justify-content: space-between;
+  padding-inline: 2rem;
+}
+
+.user-info {
+  display: flex;
+  gap: 1rem;
+}
+
+.username {
+    font-size: 1.4rem;
+}
+
+.user-stats {
+    display: flex;
+    gap: 4rem;
+}
+
+.user-stats > div {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    align-items: center;
+}
+

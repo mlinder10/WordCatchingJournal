@@ -9,5 +9,5 @@ type ProfileImageProps = {
 export default function ProfileImage({ url, size=30 }: ProfileImageProps) {
   if (url === "") return <VscAccount style={{ width: size, height: size }} />;
 
-  return <Image src={url} alt={""} width={size} height={size} />;
+  return <Image src={url} alt={""} width={size} height={size} style={{borderRadius: size}} />;
 }
