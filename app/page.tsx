@@ -17,10 +17,12 @@ export default function Feed() {
     async function fetchFeed() {
       setPosts("loading");
       try {
-        const response = await fetch(
-          `/api/feed/${type}?following=${JSON.stringify(user?.following)}`
-        );
-        if (!response.ok) throw Error()
+        const response = await fetch(`/api/feed/${type}`, {
+          headers: {
+            uid: user?.uid ?? "",
+          },
+        });
+        if (!response.ok) throw Error();
         const data = await response.json();
         if (data.length === 0) return setPosts("empty");
         setPosts(data);
@@ -34,7 +36,7 @@ export default function Feed() {
 
   function updatePosts(post: Post) {
     if (posts === "loading" || posts === "error" || posts === "empty") return;
-    const newPosts = posts.map(p => p.pid === post.pid ? post : p);
+    const newPosts = posts.map((p) => (p.pid === post.pid ? post : p));
     setPosts(newPosts);
   }
 
