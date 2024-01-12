@@ -32,7 +32,7 @@ export default function DeleteModal({
       <div className={styles["inner-container"]}>
         <p>
           Are you sure you want to delete{" "}
-          <span className={styles.word}>"{post?.word}"</span>?
+          <span className={styles.word}>{`"${post?.word}"`}</span>?
         </p>
         <div className={styles.btns}>
           <button onClick={deletePost}>Delete</button>
