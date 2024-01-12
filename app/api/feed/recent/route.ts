@@ -8,12 +8,12 @@ export async function GET(request: NextRequest) {
       sql: "select * from posts order by createdAt desc",
       args: [],
     });
-    return NextResponse.json(Post.fromRows(rs.rows), { status: 200 });
+    return NextResponse.json(Post.fromRows(rs.rows), {
+      status: 200,
+      headers: { "Cache-Control": "no-store" },
+    });
   } catch (err: any) {
     console.error(err?.message);
-    return NextResponse.json(
-      { message: err?.message },
-      { status: 500, headers: { "Cache-Control": "no-store" } }
-    );
+    return NextResponse.json({ message: err?.message }, { status: 500 });
   }
 }
