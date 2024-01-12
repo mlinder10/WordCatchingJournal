@@ -8,12 +8,22 @@ import ProfileImage from "@/components/ProfileImage";
 import Link from "next/link";
 import { VscSettings } from "react-icons/vsc";
 import LoadingView from "@/components/LoadingView";
+import DeleteModal from "@/components/DeleteModal";
+
+type DeleteModal = {
+  visible: boolean;
+  post: Post | null;
+};
 
 export default function Account() {
   const { user } = useContext(UserContext);
   const [posts, setPosts] = useState<Post[] | "loading" | "error" | "empty">(
     "loading"
   );
+  const [deleteModal, setDeleteModal] = useState<DeleteModal>({
+    visible: false,
+    post: null,
+  });
 
   useEffect(() => {
     async function fetchPosts() {
@@ -33,7 +43,7 @@ export default function Account() {
     fetchPosts();
   }, [user]);
 
-  function updatePosts(post: Post) {
+  function updateLike(post: Post) {
     if (posts === "loading" || posts === "error" || posts === "empty") return;
     let newPosts = [...posts];
     for (let i = 0; i < newPosts.length; i++) {
@@ -43,6 +53,11 @@ export default function Account() {
       }
     }
     setPosts(newPosts);
+  }
+
+  function updateDelete(post: Post) {
+    if (posts === "loading" || posts === "error" || posts === "empty") return;
+    setPosts(posts.filter((p) => p.pid !== post.pid));
   }
 
   // should never happen, just makes typescript happy
@@ -102,10 +117,18 @@ export default function Account() {
               key={post.pid}
               post={post}
               user={user}
-              updatePosts={updatePosts}
+              updateLike={updateLike}
+              deleteFunc={() => setDeleteModal({ visible: true, post })}
+              owned
             />
           ))}
       </div>
+      <DeleteModal
+        visible={deleteModal.visible}
+        close={() => setDeleteModal({ visible: false, post: null })}
+        post={deleteModal.post}
+        updateDelete={updateDelete}
+      />
     </main>
   );
 }

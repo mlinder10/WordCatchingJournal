@@ -34,7 +34,7 @@ export default function Feed() {
     fetchFeed();
   }, [type, user?.following]);
 
-  function updatePosts(post: Post) {
+  function updateLike(post: Post) {
     if (posts === "loading" || posts === "error" || posts === "empty") return;
     const newPosts = posts.map((p) => (p.pid === post.pid ? post : p));
     setPosts(newPosts);
@@ -67,7 +67,7 @@ export default function Feed() {
               key={post.pid}
               post={post}
               user={user}
-              updatePosts={updatePosts}
+              updateLike={updateLike}
             />
           ))}
       </div>

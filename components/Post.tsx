@@ -1,4 +1,4 @@
-import { VscHeart, VscHeartFilled } from "react-icons/vsc";
+import { VscHeart, VscHeartFilled, VscTrash } from "react-icons/vsc";
 import { Post, User } from "../config/types";
 import ProfileImage from "./ProfileImage";
 import styles from "./styles/post.module.css";
@@ -7,10 +7,18 @@ import Link from "next/link";
 type PostProps = {
   post: Post;
   user: User | null;
-  updatePosts: (post: Post) => void;
+  updateLike: (post: Post) => void;
+  deleteFunc?: () => void;
+  owned?: boolean;
 };
 
-export default function PostCell({ post, user, updatePosts }: PostProps) {
+export default function PostCell({
+  post,
+  user,
+  updateLike,
+  deleteFunc = () => {},
+  owned = false,
+}: PostProps) {
   async function likePost() {
     if (user === null) return;
     try {
@@ -22,7 +30,7 @@ export default function PostCell({ post, user, updatePosts }: PostProps) {
         body: JSON.stringify({ pid: post.pid, uid: user.uid }),
       });
       const data = await response.json();
-      updatePosts(data);
+      updateLike(data);
     } catch (err: any) {
       console.error(err?.message);
     }
@@ -47,7 +55,14 @@ export default function PostCell({ post, user, updatePosts }: PostProps) {
               {post.likes.length} {post.likes.length === 1 ? "like" : "likes"}
             </span>
           </button>
-          <Link href={`/user/${post.uid}`}>{post.username}</Link>
+          {owned ? (
+            <button onClick={deleteFunc}>
+              <VscTrash />
+              <span>Delete</span>
+            </button>
+          ) : (
+            <Link href={`/user/${post.uid}`}>{post.username}</Link>
+          )}
           <span>{new Date(post.createdAt).toLocaleString()}</span>
         </div>
       </div>

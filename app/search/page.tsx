@@ -37,7 +37,7 @@ export default function Search() {
     return () => clearTimeout(timeoutId);
   }, [search]);
 
-  function updatePosts(post: Post) {
+  function updateLike(post: Post) {
     if (results === "loading" || results === "error" || results === "empty")
       return;
     let newPosts = [...results.posts];
@@ -53,7 +53,7 @@ export default function Search() {
   return (
     <main className={styles.main}>
       <h1>Search</h1>
-      <div className={styles.filter}>
+      <div className={styles.upper}>
         <div className={styles.search}>
           <VscSearch className={styles.icon} />
           <input
@@ -63,19 +63,20 @@ export default function Search() {
           />
         </div>
         <span />
-        <button>Filter</button>
       </div>
       <div className={styles.resultsContainer}>
         {results === "loading" && <LoadingView />}
-        {results === "error" && <p>Error fetching results for &quot;{search}&quot;</p>}
-        {results === "empty" && <p>Enter a search</p>}
+        {results === "error" && (
+          <p>Error fetching results for &quot;{search}&quot;</p>
+        )}
+        {results === "empty" && <p className="empty-state">Enter a search</p>}
         {results !== "loading" &&
           results !== "error" &&
           results !== "empty" && (
             <SearchResults
               results={results}
               user={user}
-              updatePosts={updatePosts}
+              updateLike={updateLike}
             />
           )}
       </div>
@@ -89,10 +90,10 @@ type SearchResultsProps = {
     posts: Post[];
   };
   user: User | null;
-  updatePosts: (post: Post) => void;
+  updateLike: (post: Post) => void;
 };
 
-function SearchResults({ results, user, updatePosts }: SearchResultsProps) {
+function SearchResults({ results, user, updateLike }: SearchResultsProps) {
   return (
     <div className={styles.results}>
       <div className={styles.users}>
@@ -106,7 +107,7 @@ function SearchResults({ results, user, updatePosts }: SearchResultsProps) {
             key={post.pid}
             post={post}
             user={user}
-            updatePosts={updatePosts}
+            updateLike={updateLike}
           />
         ))}
       </div>

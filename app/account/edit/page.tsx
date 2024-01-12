@@ -76,6 +76,14 @@ export default function Edit() {
         />
         <button onClick={uploadImageToCloudinary}>Upload</button>
       </div>
+      <div>
+        <p>Change Username</p>
+        <input type="text" />
+      </div>
+      <div>
+        <p>Change Password</p>
+        <input type="text" />
+      </div>
     </main>
   );
 }

@@ -1,0 +1,59 @@
+.container {
+  position: absolute;
+  inset: 0;
+  background-color: #0008;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s ease-in-out;
+}
+
+.visible {
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  pointer-events: all;
+}
+
+.inner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: var(--background-secondary);
+  scale: 0;
+  border-radius: 10px;
+  padding: 2em;
+  gap: 2em;
+  box-shadow: 0 0 10px var(--background-secondary);
+}
+
+.visible .inner-container {
+  scale: 1;
+}
+
+.word {
+  text-transform: capitalize;
+}
+
+.btns {
+  display: flex;
+  gap: 2em;
+}
+
+.btns > button {
+  padding: 0.5em 1em;
+  border-radius: 5px;
+  border: thin solid var(--secondary);
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--secondary);
+  background-color: transparent;
+}
+
+.btns > button:first-child {
+  background-color: #f002;
+  color: #f00;
+  border-color: #f00;
+}
