@@ -11,6 +11,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(Post.fromRows(rs.rows), { status: 200 });
   } catch (err: any) {
     console.error(err?.message);
-    return NextResponse.json({ message: err?.message }, { status: 500 });
+    return NextResponse.json(
+      { message: err?.message },
+      { status: 500, headers: { "Cache-Control": "no-store" } }
+    );
   }
 }
