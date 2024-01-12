@@ -59,7 +59,7 @@ export default function User({ params }: UserProps) {
     fetchUser();
   }, [params.uid]);
 
-  function updatePosts(post: Post) {
+  function updateLike(post: Post) {
     if (posts === "loading" || posts === "error" || posts === "empty") return;
     let newPosts = [...posts];
     for (let i = 0; i < newPosts.length; i++) {
@@ -156,7 +156,7 @@ export default function User({ params }: UserProps) {
               key={post.pid}
               post={post}
               user={pageUser}
-              updatePosts={updatePosts}
+              updateLike={updateLike}
             />
           ))}
       </div>
