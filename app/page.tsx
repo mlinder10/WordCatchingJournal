@@ -20,6 +20,7 @@ export default function Feed() {
         const response = await fetch(`/api/feed/${type}`, {
           headers: {
             uid: user?.uid ?? "",
+            "Cache-Control": "no-store",
           },
         });
         if (!response.ok) throw Error();
