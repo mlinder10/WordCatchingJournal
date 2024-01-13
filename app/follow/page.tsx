@@ -48,7 +48,9 @@ export default function Follow() {
     <main className={styles.main}>
       <div className={styles.info}>
         <div className={styles["profile-info"]}>
-          <ProfileImage url={user.profileImageUrl} size={60} />
+          <div className={styles.img}>
+            <ProfileImage url={user.profileImageUrl} />
+          </div>
           <div className={styles["profile-info-text"]}>
             <h1>{user.username}</h1>
           </div>
@@ -99,7 +101,9 @@ function UserCell({ user }: UserCellProps) {
   return (
     <Link href={`/user/${user.uid}`} className={styles.user} key={user.uid}>
       <div className={styles["user-info"]}>
-        <ProfileImage url={user.profileImageUrl} size={40} />
+        <div className={styles["user-img"]}>
+          <ProfileImage url={user.profileImageUrl} />
+        </div>
         <p className={styles.username}>{user.username}</p>
       </div>
       <div className={styles["user-stats"]}>

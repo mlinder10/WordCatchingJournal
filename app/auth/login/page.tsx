@@ -44,7 +44,7 @@ export default function Login() {
         />
         <button onClick={login}>Login</button>
         <p>
-          <span>Don&apos;t have an account?</span>
+          <span>{"Don't have an account?"}</span>
           <Link href="/auth/register">Register</Link>
         </p>
       </div>
