@@ -10,9 +10,12 @@
 }
 
 .logo {
+  position: relative;
   display: flex;
-  width: 100%;
+  max-width: 6em;
+  aspect-ratio: 1;
   justify-content: center;
+  margin-inline: auto;
 }
 
 .container a {
@@ -41,4 +44,34 @@
 
 .container .active {
   color: var(--primary);
+}
+
+@media (width < 600px) {
+  .container {
+    align-items: center;
+    padding: 1em;
+    gap: 1em;
+  }
+
+  .logo {
+    max-width: 3em;
+  }
+
+  .link-text {
+    display: none;
+  }
+}
+
+@media (width < 400px) {
+  .container {
+    padding-inline: 0em;
+  }
+
+  .logo {
+    max-width: 2em;
+  }
+
+  .container a {
+    font-size: 1rem;
+  }
 }

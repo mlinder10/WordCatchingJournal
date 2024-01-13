@@ -39,7 +39,9 @@ export default function PostCell({
   return (
     <div className={styles.container}>
       <Link href={`/user/${post.uid}`}>
-        <ProfileImage url={post.profileImageUrl} />
+        <div className={styles.img}>
+          <ProfileImage url={post.profileImageUrl} />
+        </div>
       </Link>
       <div className={styles.content}>
         <p className={styles.word}>{post.word}</p>
@@ -63,7 +65,7 @@ export default function PostCell({
           ) : (
             <Link href={`/user/${post.uid}`}>{post.username}</Link>
           )}
-          <span>{new Date(post.createdAt).toLocaleString()}</span>
+          <span>{new Date(post.createdAt).toLocaleDateString()}</span>
         </div>
       </div>
     </div>

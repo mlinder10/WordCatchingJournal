@@ -67,7 +67,9 @@ export default function Account() {
     <main className={styles.main}>
       <div className={styles.info}>
         <div className={styles["profile-info"]}>
-          <ProfileImage url={user.profileImageUrl} size={60} />
+          <div className={styles.img}>
+            <ProfileImage url={user.profileImageUrl} />
+          </div>
           <div className={styles["profile-info-text"]}>
             <h1>{user.username}</h1>
             <Link href="/account/edit">

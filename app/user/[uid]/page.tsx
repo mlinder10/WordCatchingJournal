@@ -107,7 +107,9 @@ export default function User({ params }: UserProps) {
     <main className={styles.main}>
       <div className={styles.info}>
         <div className={styles["profile-info"]}>
-          <ProfileImage url={pageUser.profileImageUrl} size={60} />
+          <div className={styles.img}>
+            <ProfileImage url={pageUser.profileImageUrl} />
+          </div>
           <div className={styles["profile-info-text"]}>
             <h1>{pageUser.username}</h1>
             <button className={styles.follow} onClick={follow}>

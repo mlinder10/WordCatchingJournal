@@ -15,30 +15,36 @@ export default function Sidenav() {
   return (
     <div className={styles.container}>
       <div className={styles.logo}>
-        <Image src="/logo.png" alt="logo" width={80} height={80} />
+        <Image src="/logo.png" alt="logo" layout="fill" />
       </div>
       <Link href="/">
         <div className={pathname === "/" ? styles.active : ""}>
           <FaNewspaper />
-          <p>Feed</p>
+          <p className={styles["link-text"]}>Feed</p>
         </div>
       </Link>
       <Link href="/post">
         <div className={pathname === "/post" ? styles.active : ""}>
           <FaPlus />
-          <p>Post</p>
+          <p className={styles["link-text"]}>Post</p>
         </div>
       </Link>
       <Link href="/search">
         <div className={pathname === "/search" ? styles.active : ""}>
           <FaSearch />
-          <p>Search</p>
+          <p className={styles["link-text"]}>Search</p>
         </div>
       </Link>
       <Link href="/account">
-        <div className={pathname === "/account" || pathname === "/account/edit" ? styles.active : ""}>
+        <div
+          className={
+            pathname === "/account" || pathname === "/account/edit"
+              ? styles.active
+              : ""
+          }
+        >
           <FaUser />
-          <p>Account</p>
+          <p className={styles["link-text"]}>Account</p>
         </div>
       </Link>
     </div>

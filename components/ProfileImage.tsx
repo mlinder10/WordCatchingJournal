@@ -4,22 +4,19 @@ import { VscAccount } from "react-icons/vsc";
 
 type ProfileImageProps = {
   url: string;
-  size?: number;
 };
 
-export default function ProfileImage({ url, size = 30 }: ProfileImageProps) {
+export default function ProfileImage({ url  }: ProfileImageProps) {
   const [error, setError] = useState(false);
   if (url === "" || error)
-    return <VscAccount style={{ width: size, height: size }} />;
+    return <VscAccount style={{ width: "100%", height: "100%" }} />;
 
   return (
     <Image
       src={url}
       alt=""
+      layout={"fill"}
       onError={() => setError(true)}
-      width={size}
-      height={size}
-      style={{ borderRadius: size }}
     />
   );
 }

@@ -1,6 +1,7 @@
 import { User } from "@/config/types";
 import ProfileImage from "./ProfileImage";
 import styles from "./styles/user.module.css";
+import Link from "next/link";
 
 type UserCellProps = {
   user: User;
@@ -8,9 +9,11 @@ type UserCellProps = {
 
 export default function UserCell({ user }: UserCellProps) {
   return (
-    <div className={styles.container}>
-      <ProfileImage url={user.profileImageUrl} size={40} />
+    <Link className={styles.container} href={`/user/${user.uid}`}>
+      <div className={styles.img}>
+        <ProfileImage url={user.profileImageUrl} />
+      </div>
       <p className={styles.username}>{user.username}</p>
-    </div>
+    </Link>
   );
 }

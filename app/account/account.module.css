@@ -23,6 +23,14 @@
   gap: 1rem;
 }
 
+.img {
+  position: relative;
+  width: 60px;
+  aspect-ratio: 1;
+  border-radius: 100%;
+  overflow: hidden;
+}
+
 .profile-info-text {
   display: flex;
   flex-direction: column;
@@ -32,7 +40,7 @@
 .profile-info-text a {
   display: flex;
   gap: 1ch;
-  font-size: .8rem;
+  font-size: 0.8rem;
   color: var(--accent);
 }
 
@@ -57,4 +65,12 @@
   gap: 2rem;
   height: 100%;
   overflow-y: scroll;
+}
+
+@media (width < 800px) {
+  .stats {
+    gap: 2rem
+  }
+
+  
 }
