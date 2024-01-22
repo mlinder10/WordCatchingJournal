@@ -5,10 +5,15 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url("../../../public/logo.png");
-  background-size: fit;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: linear-gradient(
+    to bottom right,
+    var(--background),
+    var(--accent)
+  )
+}
+
+.logo {
+  height: 10vh;
 }
 
 .container {

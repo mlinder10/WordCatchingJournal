@@ -10,6 +10,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   async function login() {
+    if (!email || !password) return;
+
     try {
       const response = await fetch("/api/auth/", {
         headers: {
@@ -29,15 +31,17 @@ export default function Login() {
   return (
     <main className={styles.main}>
       <div className={styles.container}>
+        <h1>Login</h1>
+        <img className={styles.logo} src="/logo.png" alt="" />
         <input
-          type="text"
+          type="email"
           placeholder="Email"
           inputMode="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          type="text"
+          type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}

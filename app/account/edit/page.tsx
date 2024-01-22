@@ -58,6 +58,25 @@ export default function Edit() {
     }
   }
 
+  async function handleDelete() {
+    if (!user) return;
+    console.log("delete clicked");
+    alert("not yet implimented")
+    // try {
+    //   const response = await fetch("/api/auth", {
+    //     method: "DELETE",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       uid: user.uid,
+    //     },
+    //   });
+    //   if (!response.ok) throw Error();
+    //   logout();
+    // } catch (err: any) {
+    //   console.error(err?.message);
+    // }
+  }
+
   return (
     <main className={styles.main}>
       <div className={styles.header}>
@@ -77,12 +96,7 @@ export default function Edit() {
         <button onClick={uploadImageToCloudinary}>Upload</button>
       </div>
       <div>
-        <p>Change Username</p>
-        <input type="text" />
-      </div>
-      <div>
-        <p>Change Password</p>
-        <input type="text" />
+        <button>Delete Account</button>
       </div>
     </main>
   );

@@ -30,15 +30,17 @@ export default function Register() {
   return (
     <main className={styles.main}>
       <div className={styles.container}>
+        <h1>Register</h1>
+        <img className={styles.logo} src="/logo.png" alt="" />
         <input
-          type="text"
+          type="email"
           placeholder="Email"
           inputMode="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          type="text"
+          type="password"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}

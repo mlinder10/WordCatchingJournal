@@ -58,3 +58,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: err?.message }, { status: 500 });
   }
 }
+
+async function DELETE(request: NextRequest) {
+  try {
+    const uid = request.headers.get("uid");
+    if (!uid) {
+      return NextResponse.json({ message: "Missing uid" }, { status: 400 });
+    }
+    await client.execute({
+      sql: "delete from users where uid = ?",
+      args: [uid],
+    });
+    return NextResponse.json({ message: "User deleted" }, { status: 200 });
+  } catch (err: any) {
+    console.error(err?.message);
+    return NextResponse.json({ message: err?.message }, { status: 500 });
+  }
+}
