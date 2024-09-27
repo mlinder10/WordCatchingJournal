@@ -26,6 +26,10 @@ api.use("/follow", followRouter);
 api.use("/users", userRouter);
 api.use("/search", searchRouter);
 
+app.get("*", (_, res) =>
+  res.sendFile(path.join(__dirname, "../client/dist", "index.html"))
+);
+
 app.listen(PORT, async () => {
   // await dropTables();
   await createTables();
