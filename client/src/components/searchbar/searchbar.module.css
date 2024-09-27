@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  position: relative;
+  border: thin solid var(--border);
+  border-radius: 0.5rem;
+  background-color: var(--background-secondary);
+  width: 100%;
+}
+
+/* Search Icon */
+.container > svg {
+  position: absolute;
+  top: 50%;
+  left: 0.5rem;
+  translate: 0 -50%;
+  pointer-events: none;
+}
+
+.input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 0.5rem 0.5rem 0.5rem 2.5rem;
+  font-size: 1rem;
+}
+
+.clear {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  translate: 0 -50%;
+  cursor: pointer;
+  background-color: var(--secondary);
+  border: none;
+  outline: none;
+  border-radius: 100%;
+  aspect-ratio: 1;
+  width: 1rem;
+  display: grid;
+  place-items: center;
+}
+
+.clear > svg {
+  scale: 0.8;
+  color: var(--background-secondary);
+}

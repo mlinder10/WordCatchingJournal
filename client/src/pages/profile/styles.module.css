@@ -1,0 +1,61 @@
+.upper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 2rem;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.username {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.follows {
+  display: flex;
+  gap: 4rem;
+}
+
+.follow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+button.follow {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.sub-header {
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 1rem;
+  padding-block: 0.5rem;
+  background-color: var(--background-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.edit-btn,
+.logout-btn,
+.follow-btn {
+  font-size: 0.8rem;
+  height: fit-content;
+  padding: 0.25rem 0.5rem;
+}
+
+.posts {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}

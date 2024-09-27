@@ -1,0 +1,50 @@
+.post {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background-color: var(--background-secondary);
+}
+
+.upper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem;
+}
+
+.profile {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  text-decoration: none;
+  color: var(--primary);
+}
+
+.date {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.7rem;
+}
+
+.lower {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+
+.word {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.def {
+  text-transform: capitalize;
+}
+
+.pos {
+  font-size: 0.8rem;
+  font-style: italic;
+  text-transform: capitalize;
+}

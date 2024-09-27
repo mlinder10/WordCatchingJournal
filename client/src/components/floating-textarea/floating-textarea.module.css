@@ -1,0 +1,33 @@
+.container {
+  position: relative;
+  width: 100%;
+  border: 1px solid var(--border);
+  background-color: var(--background);
+  border-radius: 0.5rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  padding-top: 1.2rem;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.placeholder {
+  position: absolute;
+  top: 0.75em;
+  left: 0.5rem;
+  opacity: 0.8;
+  font-size: 1rem;
+  pointer-events: none;
+  transition: 0.3s ease-in-out;
+}
+.placeholder.hidden,
+.container:focus-within .placeholder {
+  opacity: 1;
+  top: 0.25rem;
+  font-size: 0.6rem;
+}

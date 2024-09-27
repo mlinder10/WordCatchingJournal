@@ -1,0 +1,50 @@
+.buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--border);
+}
+
+.buttons button {
+  padding-block: 1.5rem;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+.buttons button:first-child {
+  border-right: 1px solid var(--border);
+}
+
+.buttons p {
+  position: relative;
+  width: fit-content;
+  color: var(--secondary);
+}
+.buttons .active {
+  font-weight: 600;
+  color: var(--primary);
+}
+.buttons p::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: calc(100% + 1.5rem);
+  height: 2px;
+  width: 0;
+  background-color: var(--accent);
+  transition: 0.3s;
+}
+.buttons .active::after {
+  width: 100%;
+}
+
+.posts {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
