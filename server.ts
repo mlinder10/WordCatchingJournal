@@ -26,9 +26,12 @@ api.use("/follow", followRouter);
 api.use("/users", userRouter);
 api.use("/search", searchRouter);
 
-app.listen(PORT, async () => {
-  // await dropTables();
-  await createTables();
-  console.log(`Server running on http://localhost:${PORT}`);
-});
-module.exports = app;
+if (process.env.NODE_ENV === "development") {
+  app.listen(PORT, async () => {
+    // await dropTables();
+    await createTables();
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+} else {
+  module.exports = app;
+}
