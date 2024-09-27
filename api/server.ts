@@ -3,12 +3,12 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import path from "path";
-import { createTables } from "./storage/db";
-import authRouter from "./routes/auth";
-import postRouter from "./routes/post";
-import followRouter from "./routes/follow";
-import userRouter from "./routes/user";
-import searchRouter from "./routes/search";
+import { createTables } from "../storage/db";
+import authRouter from "../routes/auth";
+import postRouter from "../routes/post";
+import followRouter from "../routes/follow";
+import userRouter from "../routes/user";
+import searchRouter from "../routes/search";
 
 const app = express();
 app.use(cors({ origin: "*" }));
