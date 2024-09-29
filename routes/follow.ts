@@ -4,34 +4,6 @@ import { getLimitAndOffset } from "./post";
 
 const router = Router();
 
-router.get("/count/:userId", async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const rs = await turso.batch([
-      {
-        sql: "SELECT COUNT(*) AS count FROM following WHERE user_id = ?",
-        args: [userId],
-      },
-      {
-        sql: "SELECT COUNT(*) AS count FROM following WHERE following_id = ?",
-        args: [userId],
-      },
-      {
-        sql: "SELECT COUNT(*) AS count FROM posts WHERE user_id = ?",
-        args: [userId],
-      },
-    ]);
-    return res.status(200).json({
-      following: rs[0].rows[0].count,
-      followers: rs[1].rows[0].count,
-      posts: rs[2].rows[0].count,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
-  }
-});
-
 router.get("/following/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
@@ -97,7 +69,7 @@ router.post("/", async (req, res) => {
       sql: "INSERT INTO following (user_id, following_id) VALUES (?, ?)",
       args: [followedUserId, userId],
     });
-    return res.status(200).json({ success: true });
+    return res.status(200).json("Success");
   } catch (err) {
     console.log(err);
     return res.status(500).json(err);
@@ -111,7 +83,7 @@ router.post("/delete", async (req, res) => {
       sql: "DELETE FROM following WHERE user_id = ? AND following_id = ?",
       args: [followedUserId, userId],
     });
-    return res.status(200).json({ success: true });
+    return res.status(200).json("Success");
   } catch (err) {
     console.log(err);
     return res.status(500).json(err);

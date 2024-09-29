@@ -91,7 +91,7 @@ router.get("/:userId/:localUserId", async (req, res) => {
         followers: rs[2].rows[0].count,
         posts: rs[3].rows[0].count,
       },
-      isFollowing: rs[4].rows[0].count ?? 0 > 0,
+      isFollowing: ((rs[4].rows[0].count as number) ?? 0) > 0,
       posts: rs[5].rows,
     });
   } catch (err) {

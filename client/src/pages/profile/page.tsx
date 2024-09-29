@@ -99,7 +99,7 @@ export default function Page() {
 
   useEffect(() => {
     fetchUser();
-  }, [localUser]);
+  }, [localUser, userId]);
 
   if (!user) {
     return null;
