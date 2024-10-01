@@ -9,6 +9,7 @@ import postRouter from "../routes/post";
 import followRouter from "../routes/follow";
 import userRouter from "../routes/user";
 import searchRouter from "../routes/search";
+import passwordRouter from "../routes/password";
 
 const app = express();
 app.use(cors({ origin: "*" }));
@@ -25,6 +26,7 @@ api.use("/posts", postRouter);
 api.use("/follow", followRouter);
 api.use("/users", userRouter);
 api.use("/search", searchRouter);
+api.use("/password", passwordRouter);
 
 app.get("*", (_, res) =>
   res.sendFile(path.join(__dirname, "../client/dist", "index.html"))
