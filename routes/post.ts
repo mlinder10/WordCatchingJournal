@@ -8,6 +8,12 @@ const router = Router();
 router.get("/", async (req, res) => {
   try {
     const { limit, offset } = getLimitAndOffset(req);
+    // get Authorization as token
+    const { Authorization: token } = req.headers;
+
+    if (typeof token !== "string") {
+      return res.status(401).json("Unauthorized");
+    }
 
     const posts = await turso.execute({
       sql: `
@@ -20,7 +26,9 @@ router.get("/", async (req, res) => {
          p.updated_at as updatedAt,
          p.user_id as userId,
          u.username,
-         u.profile_pic as profilePic
+         u.profile_pic as profilePic,
+         (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as likesCount,
+         (SELECT COUNT(*) FROM favorites WHERE post_id = p.id) as favoritesCount
         FROM posts p
         LEFT JOIN users u
         ON p.user_id = u.id
@@ -52,7 +60,9 @@ router.get("/:userId", async (req, res) => {
          p.updated_at as updatedAt,
          p.user_id as userId,
          u.username,
-         u.profile_pic as profilePic
+         u.profile_pic as profilePic,
+         (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as likesCount,
+         (SELECT COUNT(*) FROM favorites WHERE post_id = p.id) as favoritesCount
         FROM posts p
         LEFT JOIN users u
         ON p.user_id = u.id
@@ -84,7 +94,9 @@ router.get("/following/:userId", async (req, res) => {
          p.updated_at as updatedAt,
          p.user_id as userId,
          u.username,
-         u.profile_pic as profilePic
+         u.profile_pic as profilePic,
+         (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as likesCount,
+         (SELECT COUNT(*) FROM favorites WHERE post_id = p.id) as favoritesCount
         FROM posts p
         LEFT JOIN users u
         ON p.user_id = u.id

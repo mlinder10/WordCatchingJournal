@@ -1,10 +1,10 @@
 import styles from "./follow-modal.module.css";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import LoadableData from "../../components/loadable-data/loadable-data";
 import { FaX } from "react-icons/fa6";
 import BorderedButton from "../../components/bordered-button/bordered-button";
 import ProfilePic from "../../components/profile-pic/profile-pic";
+import { getApi } from "../../utils";
 
 type UserResponse = {
   id: string;
@@ -37,7 +37,7 @@ export default function FollowModal({
       setUsers([]);
     }
     try {
-      const res = await axios.get<UserResponse[]>(
+      const res = await getApi().get<UserResponse[]>(
         `/api/follow/${type}/${userId}?limit=10&offset=${users.length}`
       );
       setUsers([...users, ...res.data]);

@@ -12,6 +12,17 @@ import searchRouter from "../routes/search";
 import likesRouter from "../routes/like";
 import favoritesRouter from "../routes/favorite";
 
+function authMiddleware(
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) {
+  if (!req.headers.authorization) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  next();
+}
+
 const app = express();
 app.use(cors({ origin: "*" }));
 app.use(express.json());
@@ -21,14 +32,17 @@ const PORT = process.env.PORT || 3000;
 
 const api = express.Router();
 app.use("/api", api);
-
 api.use("/auth", authRouter);
-api.use("/posts", postRouter);
-api.use("/follow", followRouter);
-api.use("/users", userRouter);
-api.use("/search", searchRouter);
-api.use("/likes", likesRouter);
-api.use("/favorites", favoritesRouter);
+
+const protectedApi = express.Router();
+protectedApi.use(authMiddleware);
+api.use("/", protectedApi);
+protectedApi.use("/posts", postRouter);
+protectedApi.use("/follow", followRouter);
+protectedApi.use("/users", userRouter);
+protectedApi.use("/search", searchRouter);
+protectedApi.use("/likes", likesRouter);
+protectedApi.use("/favorites", favoritesRouter);
 
 app.get("*", (_, res) =>
   res.sendFile(path.join(__dirname, "../client/dist", "index.html"))

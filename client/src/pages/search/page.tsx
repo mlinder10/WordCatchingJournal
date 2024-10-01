@@ -7,6 +7,7 @@ import Searchbar from "../../components/searchbar/searchbar";
 import Multiselect from "../../components/multiselect/multiselect";
 import ProfilePic from "../../components/profile-pic/profile-pic";
 import { Link } from "react-router-dom";
+import { getApi } from "../../utils";
 
 type SearchResult = UserResult | PostResult;
 
@@ -53,7 +54,7 @@ export default function Search() {
     setSearchLoading(true);
     setSearchError(null);
     try {
-      const res = await axios.post<SearchResult[]>(
+      const res = await getApi().post<SearchResult[]>(
         `/api/search?limit=${limit}&offset=${offset}`,
         {
           search,

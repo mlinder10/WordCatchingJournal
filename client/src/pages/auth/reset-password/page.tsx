@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadableData from "../../../components/loadable-data/loadable-data";
+import { getApi } from "../../../utils";
 
 export default function Page() {
   const { userId } = useParams();
@@ -13,7 +13,7 @@ export default function Page() {
     setValidLoading(true);
     setValidError(null);
     try {
-      const res = await axios.get(`/api/auth/valid-reset/${userId}`);
+      const res = await getApi().get(`/api/auth/valid-reset/${userId}`);
       setIsValid(res.data.valid);
     } catch (err) {
       console.error(err);

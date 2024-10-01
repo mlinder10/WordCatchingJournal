@@ -1,3 +1,5 @@
+import axios from "axios";
+
 type FormattedDate = {
   date: string;
   time: string;
@@ -20,4 +22,17 @@ export function formatDate(date: number): FormattedDate {
     date: `${[month, day, year].join("/")}`,
     time,
   };
+}
+
+export function getApi() {
+  let token = "";
+  try {
+    token = JSON.parse(localStorage.getItem("user") ?? "").token;
+  } catch {}
+  return axios.create({
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  });
 }
