@@ -9,6 +9,8 @@ import postRouter from "../routes/post";
 import followRouter from "../routes/follow";
 import userRouter from "../routes/user";
 import searchRouter from "../routes/search";
+import likesRouter from "../routes/like";
+import favoritesRouter from "../routes/favorite";
 
 const app = express();
 app.use(cors({ origin: "*" }));
@@ -25,6 +27,8 @@ api.use("/posts", postRouter);
 api.use("/follow", followRouter);
 api.use("/users", userRouter);
 api.use("/search", searchRouter);
+api.use("/likes", likesRouter);
+api.use("/favorites", favoritesRouter);
 
 app.get("*", (_, res) =>
   res.sendFile(path.join(__dirname, "../client/dist", "index.html"))
