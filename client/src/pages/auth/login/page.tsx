@@ -59,6 +59,12 @@ export default function Page() {
           />
         </div>
         {error && <p className="error-message">{error}</p>}
+        <Link
+          className={`link ${styles["forgot-password"]}`}
+          to="/request-reset"
+        >
+          Forgot Password?
+        </Link>
         <div className={styles.actions}>
           <LoadingButton loading={loading} onClick={handleLogin}>
             Login

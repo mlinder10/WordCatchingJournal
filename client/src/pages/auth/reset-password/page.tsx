@@ -1,51 +1,58 @@
+import styles from "./styles.module.css";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import LoadableData from "../../../components/loadable-data/loadable-data";
+import FloatingInput from "../../../components/floating-input/floating-input";
+import LoadingButton from "../../../components/loading-button/loading-button";
 
 export default function Page() {
   const { userId } = useParams();
-  const [isValid, setIsValid] = useState<boolean | null>(null);
-  const [validLoading, setValidLoading] = useState(false);
-  const [validError, setValidError] = useState<string | null>(null);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  async function checkValidReset() {
-    setValidLoading(true);
-    setValidError(null);
+  async function handleReset() {
+    if (password !== confirmPassword) {
+      return setError("Passwords do not match");
+    }
+    setLoading(true);
+    setError(null);
     try {
-      const res = await axios.get(`/api/auth/valid-reset/${userId}`);
-      setIsValid(res.data.valid);
+      await axios.patch("/api/auth/password", {
+        userId,
+        password,
+      });
     } catch (err) {
       console.error(err);
-      setValidError("Failed to check validity");
+      setError("Invalid email");
     } finally {
-      setValidLoading(false);
+      setLoading(false);
     }
   }
 
-  useEffect(() => {
-    checkValidReset();
-  }, []);
-
   return (
-    <LoadableData loading={validLoading} error={validError}>
-      {isValid ? <ValidReset /> : <InvalidReset />}
-    </LoadableData>
-  );
-}
-
-function ValidReset() {
-  return (
-    <div>
-      <h1>Valid Reset</h1>
-    </div>
-  );
-}
-
-function InvalidReset() {
-  return (
-    <div>
-      <h1>Invalid Reset</h1>
+    <div className={`page ${styles.page}`}>
+      <div className={styles.container}>
+        <div>
+          <FloatingInput
+            placeholder="New Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <FloatingInput
+            placeholder="Confirm Password"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          {error && <p className="error-message">{error}</p>}
+          <LoadingButton type="primary" onClick={handleReset} loading={loading}>
+            Reset Password
+          </LoadingButton>
+        </div>
+      </div>
     </div>
   );
 }
