@@ -20,13 +20,15 @@ const PORT = process.env.PORT || 3000;
 
 const api = express.Router();
 app.use("/api", api);
-
 api.use("/auth", authRouter);
-api.use("/posts", postRouter);
-api.use("/follow", followRouter);
-api.use("/users", userRouter);
-api.use("/search", searchRouter);
 api.use("/password", passwordRouter);
+
+const protectedApi = express.Router();
+api.use("/", protectedApi);
+protectedApi.use("/posts", postRouter);
+protectedApi.use("/follow", followRouter);
+protectedApi.use("/users", userRouter);
+protectedApi.use("/search", searchRouter);
 
 app.get("*", (_, res) =>
   res.sendFile(path.join(__dirname, "../client/dist", "index.html"))

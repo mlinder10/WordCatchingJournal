@@ -27,3 +27,10 @@ export async function sendEmail(email: string, userId: string) {
 
   return await transporter.sendMail(mailOptions);
 }
+
+export async function authMiddleware(req: any, res: any, next: any) {
+  if (!req.headers.authorization) {
+    return res.status(401).json("Not authorized");
+  }
+  next();
+}
