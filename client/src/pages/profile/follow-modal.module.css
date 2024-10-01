@@ -33,6 +33,11 @@
   font-weight: 500;
 }
 
+.user-link {
+  color: var(--primary);
+  text-decoration: none;
+}
+
 .user-cell {
   display: flex;
   justify-content: space-between;

@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
   try {
     const { limit, offset } = getLimitAndOffset(req);
     // get Authorization as token
-    const { Authorization: token } = req.headers;
+    const { authorization: token } = req.headers;
 
     if (typeof token !== "string") {
       return res.status(401).json("Unauthorized");

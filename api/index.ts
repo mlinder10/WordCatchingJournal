@@ -11,17 +11,7 @@ import userRouter from "../routes/user";
 import searchRouter from "../routes/search";
 import likesRouter from "../routes/like";
 import favoritesRouter from "../routes/favorite";
-
-function authMiddleware(
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) {
-  if (!req.headers.authorization) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-  next();
-}
+import { authMiddleware } from "../utils";
 
 const app = express();
 app.use(cors({ origin: "*" }));

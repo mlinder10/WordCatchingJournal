@@ -28,16 +28,16 @@ export default function PostView({ post }: PostProps) {
         <p className={styles.word}>{post.word}</p>
         <p className={styles.def}>{post.definition}</p>
         <p className={styles.pos}>{post.partOfSpeech}</p>
-      </div>
-      <div className={styles.buttons}>
-        <button>
-          <FaHeart />
-          <span>Like</span>
-        </button>
-        <button>
-          <FaStar />
-          <span>Favorite</span>
-        </button>
+        <div className={styles.buttons}>
+          <button>
+            <FaHeart />
+            <span>{post.likesCount} Like</span>
+          </button>
+          <button>
+            <FaStar />
+            <span>{post.favoritesCount} Favorite</span>
+          </button>
+        </div>
       </div>
     </div>
   );

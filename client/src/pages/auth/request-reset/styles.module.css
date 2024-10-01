@@ -1,0 +1,14 @@
+.page {
+  display: grid;
+  place-items: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  background-color: var(--background-secondary);
+  border-radius: 2rem;
+  border: 1px solid var(--border);
+  padding: 2rem;
+}
