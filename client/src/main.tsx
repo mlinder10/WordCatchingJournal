@@ -10,6 +10,8 @@ import Profile from "./pages/profile/page";
 import AuthProvider, { ProtectedRoute } from "./contexts/AuthProvider.tsx";
 import Navbar from "./components/navbar/navbar.tsx";
 import Search from "./pages/search/page.tsx";
+import RequestReset from "./pages/auth/request-reset/page";
+import ResetPassword from "./pages/auth/reset-password/page";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/request-reset",
+    element: <RequestReset />,
+  },
+  {
+    path: "/reset-password/:userId",
+    element: <ResetPassword />,
   },
   {
     path: "/",

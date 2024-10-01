@@ -11,12 +11,20 @@ router.get("/following/:userId", async (req, res) => {
 
     const following = await turso.execute({
       sql: `
-        SELECT
-          u.id, u.username, u.profile_pic as profilePic
-        FROM following f
-        LEFT JOIN users u
-        ON f.user_id = u.id
-        WHERE f.following_id = ?
+        SELECT 
+          u.id,
+          u.username,
+          u.profile_pic AS profilePic,
+          COUNT(DISTINCT p.id) AS postsCount,
+          COUNT(DISTINCT f2.user_id) AS followingCount,
+          COUNT(DISTINCT f3.following_id) AS followersCount
+        FROM following f1
+        JOIN users u ON f1.user_id = u.id
+        LEFT JOIN posts p ON u.id = p.user_id
+        LEFT JOIN following f2 ON u.id = f2.following_id
+        LEFT JOIN following f3 ON u.id = f3.user_id
+        WHERE f1.following_id = ?
+        GROUP BY u.id, u.username
         LIMIT ? OFFSET ?
       `,
       args: [userId, limit, offset],

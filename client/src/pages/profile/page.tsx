@@ -98,6 +98,7 @@ export default function Page() {
   }
 
   useEffect(() => {
+    setShowFollow(null);
     fetchUser();
   }, [localUser, userId]);
 

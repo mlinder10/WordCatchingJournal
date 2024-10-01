@@ -5,6 +5,7 @@ import LoadableData from "../../components/loadable-data/loadable-data";
 import { FaX } from "react-icons/fa6";
 import BorderedButton from "../../components/bordered-button/bordered-button";
 import ProfilePic from "../../components/profile-pic/profile-pic";
+import { Link } from "react-router-dom";
 
 type UserResponse = {
   id: string;
@@ -31,16 +32,17 @@ export default function FollowModal({
   const [usersError, setUsersError] = useState<string | null>(null);
 
   async function fetchUsers(clear: boolean = false) {
+    console.log(type);
     setUsersLoading(true);
     setUsersError(null);
-    if (clear) {
-      setUsers([]);
-    }
     try {
       const res = await axios.get<UserResponse[]>(
-        `/api/follow/${type}/${userId}?limit=10&offset=${users.length}`
+        `/api/follow/${type}/${userId}?limit=10&offset=${
+          clear ? 0 : users.length
+        }`
       );
-      setUsers([...users, ...res.data]);
+      const newUsers = clear ? res.data : [...users, ...res.data];
+      setUsers(newUsers);
     } catch (err) {
       console.error(err);
       setUsersError("Failed to fetch users");
@@ -91,25 +93,27 @@ type UserViewProps = {
 
 function UserView({ user }: UserViewProps) {
   return (
-    <div className={styles["user-cell"]}>
-      <div className={styles["user-info"]}>
-        <ProfilePic profilePic={user.profilePic} username={user.username} />
-        <p>{user.username}</p>
+    <Link to={`/profile/${user.id}`} className={styles["user-link"]}>
+      <div className={styles["user-cell"]}>
+        <div className={styles["user-info"]}>
+          <ProfilePic profilePic={user.profilePic} username={user.username} />
+          <p>{user.username}</p>
+        </div>
+        <div className={styles["user-stats"]}>
+          <div className={styles.stat}>
+            <span>{user.postsCount}</span>
+            <span>Posts</span>
+          </div>
+          <div className={styles.stat}>
+            <span>{user.followersCount}</span>
+            <span>Followers</span>
+          </div>
+          <div className={styles.stat}>
+            <span>{user.followingCount}</span>
+            <span>Following</span>
+          </div>
+        </div>
       </div>
-      <div className={styles["user-stats"]}>
-        <div className={styles.stat}>
-          <span>{user.postsCount}</span>
-          <span>Posts</span>
-        </div>
-        <div className={styles.stat}>
-          <span>{user.followersCount}</span>
-          <span>Followers</span>
-        </div>
-        <div className={styles.stat}>
-          <span>{user.followingCount}</span>
-          <span>Following</span>
-        </div>
-      </div>
-    </div>
+    </Link>
   );
 }
