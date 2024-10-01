@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { turso } from "../storage/db";
+import { sendEmail } from "../utils";
+import bcrypt from "bcrypt";
 
 const router = Router();
 
@@ -18,18 +20,21 @@ router.post("/", async (req, res) => {
         args: [email],
       },
       {
-        sql: "INSERT INTO password_resets (user_id) VALUES (SELECT id FROM users WHERE email = ?)",
+        sql: "INSERT INTO password_resets (user_id) VALUES ((SELECT id FROM users WHERE email = ?))",
         args: [email],
       },
     ]);
 
-    if (rs[0].rows.length !== 1) {
+    if (rs[0].rows.length !== 1 || typeof rs[0].rows[0].id !== "string") {
       return res.status(404).json("Email not found");
     }
 
-    const link = `reset-password/${rs[0].rows[0].id}`;
-    console.log(link);
-    // TODO: send email with link
+    try {
+      await sendEmail(email, rs[0].rows[0].id);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json("Failed to send password reset link");
+    }
 
     return res.status(200).json("Password reset link sent");
   } catch (err) {
@@ -52,10 +57,19 @@ router.patch("/", async (req, res) => {
       return res.status(401).json("Not authorized to reset password");
     }
 
-    await turso.execute({
-      sql: "UPDATE users SET password = ? WHERE id = ?",
-      args: [newPassword, userId],
-    });
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    await turso.batch([
+      {
+        sql: "UPDATE users SET password = ? WHERE id = ?",
+        args: [hashedPassword, userId],
+      },
+      {
+        sql: "DELETE FROM password_resets WHERE user_id = ?",
+        args: [userId],
+      },
+    ]);
 
     return res.status(200).json("Password reset successful");
   } catch (err) {

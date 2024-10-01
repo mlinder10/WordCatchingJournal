@@ -2,6 +2,7 @@ import { Router } from "express";
 import { User } from "../types";
 import { v4 } from "uuid";
 import { turso } from "../storage/db";
+import bcrypt from "bcrypt";
 
 const router = Router();
 
@@ -18,13 +19,19 @@ router.post("/login", async (req, res) => {
           id,
           username,
           token,
-          profile_pic AS profilePic
+          profile_pic AS profilePic,
+          password
         FROM users
-        WHERE email = ? AND password = ?`,
-      args: [email, password],
+        WHERE email = ?`,
+      args: [email],
     });
 
-    if (users.rows.length === 0) {
+    if (users.rows.length === 0 || typeof users.rows[0].password !== "string") {
+      return res.status(401).json("Invalid credentials");
+    }
+
+    const match = await bcrypt.compare(password, users.rows[0].password);
+    if (!match) {
       return res.status(401).json("Invalid credentials");
     }
 
@@ -63,11 +70,14 @@ router.post("/register", async (req, res) => {
       return res.status(400).json("User already exists");
     }
 
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     const user: User = {
       id: v4(),
       email,
       username,
-      password,
+      password: hashedPassword,
       token: v4(),
       profilePic: null,
       createdAt: Date.now(),
@@ -128,44 +138,6 @@ router.get("/token/:token", async (req, res) => {
       username: user.rows[0].username,
       profilePic: user.rows[0].profilePic,
     });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
-  }
-});
-
-router.get("valid-reset/:userId", async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const rs = await turso.execute({
-      sql: "SELECT * FROM password_resets WHERE user_id = ?",
-      args: [userId],
-    });
-    return res.status(200).json({ valid: rs.rows.length > 0 });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
-  }
-});
-
-router.post("/password-reset", async (req, res) => {
-  try {
-    const { email } = req.body;
-    if (!email) {
-      return res.status(400).json("Email is required");
-    }
-    const rs = await turso.execute({
-      sql: "SELECT id FROM users WHERE email = ?",
-      args: [email],
-    });
-    if (rs.rows.length === 0) {
-      return res.status(404).json("User not found");
-    }
-    await turso.execute({
-      sql: "INSERT INTO password_resets (user_id) VALUES (?)",
-      args: [rs.rows[0].id],
-    });
-    return res.status(200).json("Password reset link sent");
   } catch (err) {
     console.log(err);
     return res.status(500).json(err);

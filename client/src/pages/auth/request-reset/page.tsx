@@ -13,7 +13,7 @@ export default function Page() {
     setLoading(true);
     setError(null);
     try {
-      await axios.post("/api/auth/password", { email });
+      await axios.post("/api/password", { email });
     } catch (err) {
       console.error(err);
       setError("Invalid email");
