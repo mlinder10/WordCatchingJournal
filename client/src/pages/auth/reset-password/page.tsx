@@ -34,7 +34,10 @@ export default function Page() {
   return (
     <div className={`page ${styles.page}`}>
       <div className={styles.container}>
-        <div>
+        <div className={styles.header}>
+          <p>Reset Password</p>
+        </div>
+        <div className={styles.body}>
           <FloatingInput
             placeholder="New Password"
             type="password"
