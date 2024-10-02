@@ -79,6 +79,7 @@ router.post("/", async (req, res) => {
       sql: "INSERT INTO likes (user_id, post_id) VALUES (?, ?)",
       args: [userId, postId],
     });
+    return res.status(200).json({ liked: 1 });
   } catch (err) {
     console.error(err);
     return res.status(500).json(err);
@@ -92,6 +93,7 @@ router.post("/delete", async (req, res) => {
       sql: "DELETE FROM likes WHERE user_id = ? AND post_id = ?",
       args: [userId, postId],
     });
+    return res.status(200).json({ liked: 0 });
   } catch (err) {
     console.error(err);
     return res.status(500).json(err);

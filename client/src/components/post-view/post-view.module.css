@@ -64,3 +64,15 @@
   cursor: pointer;
   font-size: 0.8rem;
 }
+
+.like {
+  svg {
+    color: #f00;
+  }
+}
+
+.favorite {
+  svg {
+    color: #ff0;
+  }
+}

@@ -31,8 +31,8 @@ protectedApi.use("/posts", postRouter);
 protectedApi.use("/follow", followRouter);
 protectedApi.use("/users", userRouter);
 protectedApi.use("/search", searchRouter);
-protectedApi.use("/likes", likesRouter);
-protectedApi.use("/favorites", favoritesRouter);
+protectedApi.use("/like", likesRouter);
+protectedApi.use("/favorite", favoritesRouter);
 
 app.get("*", (_, res) =>
   res.sendFile(path.join(__dirname, "../client/dist", "index.html"))
