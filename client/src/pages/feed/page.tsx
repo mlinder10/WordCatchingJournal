@@ -1,16 +1,16 @@
 import styles from "./styles.module.css";
 import { useContext, useEffect, useState } from "react";
 import { Post } from "../../types";
-import axios from "axios";
 import LoadableData from "../../components/loadable-data/loadable-data";
 import PostView from "../../components/post-view/post-view";
 import { AuthContext } from "../../contexts/AuthProvider";
+import { getApi } from "../../utils";
 
 async function fetchRecentPosts(
   limit: number,
   offset: number
 ): Promise<Post[]> {
-  const res = await axios.get<Post[]>(
+  const res = await getApi().get<Post[]>(
     `/api/posts?limit=${limit}&offset=${offset}`
   );
   return res.data;
@@ -21,7 +21,7 @@ async function fetchFollowingPosts(
   limit: number,
   offset: number
 ): Promise<Post[]> {
-  const res = await axios.get<Post[]>(
+  const res = await getApi().get<Post[]>(
     `/api/posts/following/${userId}?limit=${limit}&offset=${offset}`
   );
   return res.data;

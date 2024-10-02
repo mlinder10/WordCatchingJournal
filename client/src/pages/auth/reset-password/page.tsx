@@ -1,9 +1,9 @@
 import styles from "./styles.module.css";
-import axios from "axios";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import FloatingInput from "../../../components/floating-input/floating-input";
 import LoadingButton from "../../../components/loading-button/loading-button";
+import { getApi } from "../../../utils";
 
 export default function Page() {
   const { userId } = useParams();
@@ -19,7 +19,7 @@ export default function Page() {
     setLoading(true);
     setError(null);
     try {
-      await axios.patch("/api/auth/password", {
+      await getApi().patch("/api/password", {
         userId,
         password,
       });

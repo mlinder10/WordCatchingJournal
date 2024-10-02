@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import LoadableData from "../../components/loadable-data/loadable-data";
-import axios from "axios";
 import PostView from "../../components/post-view/post-view";
 import Searchbar from "../../components/searchbar/searchbar";
 import Multiselect from "../../components/multiselect/multiselect";
 import ProfilePic from "../../components/profile-pic/profile-pic";
 import { Link } from "react-router-dom";
+import { getApi } from "../../utils";
+import { Post } from "../../types";
 
 type SearchResult = UserResult | PostResult;
 
@@ -17,18 +18,7 @@ type UserResult = {
   profilePic: string | null;
 };
 
-type PostResult = {
-  type: "post";
-  id: string;
-  word: string;
-  definition: string;
-  partOfSpeech: string;
-  createdAt: number;
-  updatedAt: number;
-  userId: string;
-  username: string;
-  profilePic: string | null;
-};
+type PostResult = Post & { type: "post" };
 
 type FilterType = "users" | "words" | "definitions";
 
@@ -53,7 +43,7 @@ export default function Search() {
     setSearchLoading(true);
     setSearchError(null);
     try {
-      const res = await axios.post<SearchResult[]>(
+      const res = await getApi().post<SearchResult[]>(
         `/api/search?limit=${limit}&offset=${offset}`,
         {
           search,

@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import { Post, User } from "../../types";
-import axios from "axios";
 import LoadableData from "../../components/loadable-data/loadable-data";
 import PostView from "../../components/post-view/post-view";
 import ProfilePic from "../../components/profile-pic/profile-pic";
@@ -11,6 +10,7 @@ import FollowModal from "./follow-modal";
 import { FaEdit, FaSignOutAlt } from "react-icons/fa";
 import BorderedButton from "../../components/bordered-button/bordered-button";
 import LoadingButton from "../../components/loading-button/loading-button";
+import { getApi } from "../../utils";
 
 type UserResponse = {
   user: {
@@ -49,7 +49,7 @@ export default function Page() {
     setUserLoading(true);
     setUserError(null);
     try {
-      const res = await axios.get<UserResponse>(
+      const res = await getApi().get<UserResponse>(
         `/api/users/${userId}/${localUser.id}`
       );
       setUser({
@@ -78,13 +78,13 @@ export default function Page() {
     setFollowLoading(true);
     try {
       if (following) {
-        await axios.post("/api/follow/delete", {
+        await getApi().post("/api/follow/delete", {
           userId: localUser?.id,
           followedUserId: user?.id,
         });
         setFollowing(false);
       } else {
-        await axios.post("/api/follow", {
+        await getApi().post("/api/follow", {
           userId: localUser?.id,
           followedUserId: user?.id,
         });

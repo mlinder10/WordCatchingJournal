@@ -1,3 +1,4 @@
+import { NextFunction, Request, Response } from "express";
 import nodemailer from "nodemailer";
 
 // TODO: use a different email provider
@@ -28,9 +29,13 @@ export async function sendEmail(email: string, userId: string) {
   return await transporter.sendMail(mailOptions);
 }
 
-export async function authMiddleware(req: any, res: any, next: any) {
+export function authMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   if (!req.headers.authorization) {
-    return res.status(401).json("Not authorized");
+    return res.status(401).json({ error: "Unauthorized" });
   }
   next();
 }

@@ -15,6 +15,10 @@ export type Post = {
   userId: string;
   username: string;
   profilePic: string | null;
+  likesCount: number;
+  favoritesCount: number;
+  liked: 0 | 1;
+  favorited: 0 | 1;
 };
 
 export type DictResponse = {

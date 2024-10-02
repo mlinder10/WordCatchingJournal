@@ -10,6 +10,7 @@ import BorderedButton from "../../components/bordered-button/bordered-button";
 import { FaArrowUp, FaSearch } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
 import { AuthContext } from "../../contexts/AuthProvider";
+import { getApi } from "../../utils";
 
 const DICTIONARY_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/";
 
@@ -47,7 +48,7 @@ export default function Page() {
     setPostLoading(true);
     setPostError(null);
     try {
-      await axios.post("/api/posts", {
+      await getApi().post("/api/posts", {
         word,
         definition,
         partOfSpeech,

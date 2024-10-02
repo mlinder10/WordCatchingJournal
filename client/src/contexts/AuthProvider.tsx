@@ -6,8 +6,8 @@ import {
   useState,
 } from "react";
 import { User } from "../types";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getApi } from "../utils";
 
 type AuthContextType = {
   user: User | null;
@@ -42,12 +42,12 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   const [authLoading, setAuthLoading] = useState(true);
 
   async function login(email: string, password: string) {
-    const res = await axios.post("/api/auth/login", { email, password });
+    const res = await getApi().post("/api/auth/login", { email, password });
     setUser(res.data);
   }
 
   async function register(username: string, email: string, password: string) {
-    const res = await axios.post("/api/auth/register", {
+    const res = await getApi().post("/api/auth/register", {
       username,
       email,
       password,
@@ -57,7 +57,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
   async function logout() {
     try {
-      await axios.delete(`/api/auth/logout/${user?.token}`);
+      await getApi().delete(`/api/auth/logout/${user?.token}`);
       setUser(null);
       window.localStorage.removeItem("user");
     } catch (err) {
@@ -74,7 +74,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     if (!user) {
       throw new Error("No user found");
     }
-    await axios.get(`/api/auth/token/${user.token}`);
+    await getApi().get(`/api/auth/token/${user.token}`);
     setUser(user);
   }
 

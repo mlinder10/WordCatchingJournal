@@ -7,6 +7,10 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
+    const { authorization: token } = req.headers;
+    if (typeof token !== "string") {
+      return res.status(401).json("Unauthorized");
+    }
     const { limit, offset } = getLimitAndOffset(req);
 
     const posts = await turso.execute({
@@ -20,15 +24,18 @@ router.get("/", async (req, res) => {
          p.updated_at as updatedAt,
          p.user_id as userId,
          u.username,
-         u.profile_pic as profilePic
+         u.profile_pic as profilePic,
+         (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as likesCount,
+         (SELECT COUNT(*) FROM favorites WHERE post_id = p.id) as favoritesCount,
+         (SELECT COUNT(*) FROM likes WHERE post_id = p.id AND user_id = (SELECT id FROM users WHERE token = ?)) as liked,
+         (SELECT COUNT(*) FROM favorites WHERE post_id = p.id AND user_id = (SELECT id FROM users WHERE token = ?)) as favorited
         FROM posts p
         LEFT JOIN users u
         ON p.user_id = u.id
         LIMIT ? OFFSET ?
       `,
-      args: [limit, offset],
+      args: [token, token, limit, offset],
     });
-
     return res.status(200).json(posts.rows);
   } catch (err) {
     console.error(err);
@@ -39,6 +46,10 @@ router.get("/", async (req, res) => {
 router.get("/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
+    const { authorization: token } = req.headers;
+    if (typeof token !== "string") {
+      return res.status(401).json("Unauthorized");
+    }
     const { limit, offset } = getLimitAndOffset(req);
 
     const post = await turso.execute({
@@ -52,14 +63,18 @@ router.get("/:userId", async (req, res) => {
          p.updated_at as updatedAt,
          p.user_id as userId,
          u.username,
-         u.profile_pic as profilePic
+         u.profile_pic as profilePic,
+         (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as likesCount,
+         (SELECT COUNT(*) FROM favorites WHERE post_id = p.id) as favoritesCount,
+         (SELECT COUNT(*) FROM likes WHERE post_id = p.id AND user_id = (SELECT id FROM users WHERE token = ?)) as liked,
+         (SELECT COUNT(*) FROM favorites WHERE post_id = p.id AND user_id = (SELECT id FROM users WHERE token = ?)) as favorited
         FROM posts p
         LEFT JOIN users u
         ON p.user_id = u.id
         WHERE p.user_id = ?
         LIMIT ? OFFSET ?
       `,
-      args: [userId, limit, offset],
+      args: [token, token, userId, limit, offset],
     });
     return res.status(200).json(post.rows);
   } catch (err) {
@@ -71,6 +86,10 @@ router.get("/:userId", async (req, res) => {
 router.get("/following/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
+    const { authorization: token } = req.headers;
+    if (typeof token !== "string") {
+      return res.status(401).json("Unauthorized");
+    }
     const { limit, offset } = getLimitAndOffset(req);
 
     const rs = await turso.execute({
@@ -84,14 +103,18 @@ router.get("/following/:userId", async (req, res) => {
          p.updated_at as updatedAt,
          p.user_id as userId,
          u.username,
-         u.profile_pic as profilePic
+         u.profile_pic as profilePic,
+         (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as likesCount,
+         (SELECT COUNT(*) FROM favorites WHERE post_id = p.id) as favoritesCount,
+         (SELECT COUNT(*) FROM likes WHERE post_id = p.id AND user_id = (SELECT id FROM users WHERE token = ?)) as liked,
+         (SELECT COUNT(*) FROM favorites WHERE post_id = p.id AND user_id = (SELECT id FROM users WHERE token = ?)) as favorited
         FROM posts p
         LEFT JOIN users u
         ON p.user_id = u.id
         WHERE p.user_id IN (SELECT user_id FROM following WHERE following_id = ?)
         LIMIT ? OFFSET ?
       `,
-      args: [userId, limit, offset],
+      args: [token, token, userId, limit, offset],
     });
     return res.status(200).json(rs.rows);
   } catch (err) {

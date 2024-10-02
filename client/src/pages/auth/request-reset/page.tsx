@@ -2,7 +2,7 @@ import styles from "./styles.module.css";
 import { useState } from "react";
 import FloatingInput from "../../../components/floating-input/floating-input";
 import LoadingButton from "../../../components/loading-button/loading-button";
-import axios from "axios";
+import { getApi } from "../../../utils";
 
 export default function Page() {
   const [email, setEmail] = useState("");
@@ -13,7 +13,7 @@ export default function Page() {
     setLoading(true);
     setError(null);
     try {
-      await axios.post("/api/password", { email });
+      await getApi().post("/api/password", { email });
     } catch (err) {
       console.error(err);
       setError("Invalid email");

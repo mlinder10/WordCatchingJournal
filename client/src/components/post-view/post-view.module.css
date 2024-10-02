@@ -48,3 +48,31 @@
   font-style: italic;
   text-transform: capitalize;
 }
+
+.buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.buttons button {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.like {
+  svg {
+    color: #f00;
+  }
+}
+
+.favorite {
+  svg {
+    color: #ff0;
+  }
+}
