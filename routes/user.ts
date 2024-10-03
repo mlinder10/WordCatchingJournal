@@ -20,10 +20,6 @@ type UserResponse = {
 router.get("/:userId/:localUserId", async (req, res) => {
   try {
     const { userId, localUserId } = req.params;
-    const { authorization: token } = req.headers;
-    if (typeof token !== "string") {
-      return res.status(401).json("Unauthorized");
-    }
 
     const rs = await turso.batch([
       {
@@ -75,8 +71,8 @@ router.get("/:userId/:localUserId", async (req, res) => {
             u.profile_pic as profilePic,
             (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as likesCount,
             (SELECT COUNT(*) FROM favorites WHERE post_id = p.id) as favoritesCount,
-            (SELECT COUNT(*) FROM likes WHERE post_id = p.id AND user_id = (SELECT id FROM users WHERE token = ?)) as liked,
-            (SELECT COUNT(*) FROM favorites WHERE post_id = p.id AND user_id = (SELECT id FROM users WHERE token = ?)) as favorited
+            (SELECT COUNT(*) FROM likes WHERE post_id = p.id AND user_id = ?) as liked,
+            (SELECT COUNT(*) FROM favorites WHERE post_id = p.id AND user_id = ?) as favorited
           FROM posts p
           LEFT JOIN users u
           ON p.user_id = u.id
@@ -84,7 +80,7 @@ router.get("/:userId/:localUserId", async (req, res) => {
           ORDER BY p.created_at DESC
           LIMIT 10
         `,
-        args: [token, token, userId],
+        args: [localUserId, localUserId, userId],
       },
     ]);
 

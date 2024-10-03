@@ -7,10 +7,7 @@ const router = Router();
 router.post("/", async (req, res) => {
   try {
     const { search, filter } = req.body;
-    const { authorization: token } = req.headers;
-    if (typeof token !== "string") {
-      return res.status(401).json("Unauthorized");
-    }
+    const { userId } = req.body;
     const { limit, offset } = getLimitAndOffset(req);
 
     if (!search || !filter) {
@@ -50,15 +47,15 @@ router.post("/", async (req, res) => {
             u.profile_pic as profilePic,
             (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as likesCount,
             (SELECT COUNT(*) FROM favorites WHERE post_id = p.id) as favoritesCount,
-            (SELECT COUNT(*) FROM likes WHERE post_id = p.id AND user_id = (SELECT id FROM users WHERE token = ?)) as liked,
-            (SELECT COUNT(*) FROM favorites WHERE post_id = p.id AND user_id = (SELECT id FROM users WHERE token = ?)) as favorited
+            (SELECT COUNT(*) FROM likes WHERE post_id = p.id AND user_id = ?) as liked,
+            (SELECT COUNT(*) FROM favorites WHERE post_id = p.id AND user_id = ?) as favorited
           FROM posts p
           LEFT JOIN users u
           ON p.user_id = u.id
           WHERE p.word LIKE ?
           LIMIT ? OFFSET ?
       `,
-        args: [token, token, `%${search}%`, limit, offset],
+        args: [userId, userId, `%${search}%`, limit, offset],
       });
 
       values = [
@@ -82,15 +79,15 @@ router.post("/", async (req, res) => {
             u.profile_pic as profilePic,
             (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as likesCount,
             (SELECT COUNT(*) FROM favorites WHERE post_id = p.id) as favoritesCount,
-            (SELECT COUNT(*) FROM likes WHERE post_id = p.id AND user_id = (SELECT id FROM users WHERE token = ?)) as liked,
-            (SELECT COUNT(*) FROM favorites WHERE post_id = p.id AND user_id = (SELECT id FROM users WHERE token = ?)) as favorited
+            (SELECT COUNT(*) FROM likes WHERE post_id = p.id AND user_id = ?) as liked,
+            (SELECT COUNT(*) FROM favorites WHERE post_id = p.id AND user_id = ?) as favorited
           FROM posts p
           LEFT JOIN users u
           ON p.user_id = u.id
           WHERE p.definition LIKE ?
           LIMIT ? OFFSET ?
       `,
-        args: [token, token, `%${search}%`, limit, offset],
+        args: [userId, userId, `%${search}%`, limit, offset],
       });
 
       values = [

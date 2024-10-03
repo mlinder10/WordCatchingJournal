@@ -7,11 +7,8 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const { authorization: token } = req.headers;
-    if (typeof token !== "string") {
-      return res.status(401).json("Unauthorized");
-    }
     const { limit, offset } = getLimitAndOffset(req);
+    const { token } = req.body;
 
     const posts = await turso.execute({
       sql: `
@@ -46,10 +43,7 @@ router.get("/", async (req, res) => {
 router.get("/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
-    const { authorization: token } = req.headers;
-    if (typeof token !== "string") {
-      return res.status(401).json("Unauthorized");
-    }
+    const { token } = req.body;
     const { limit, offset } = getLimitAndOffset(req);
 
     const post = await turso.execute({
@@ -86,10 +80,7 @@ router.get("/:userId", async (req, res) => {
 router.get("/following/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
-    const { authorization: token } = req.headers;
-    if (typeof token !== "string") {
-      return res.status(401).json("Unauthorized");
-    }
+    const { token } = req.body;
     const { limit, offset } = getLimitAndOffset(req);
 
     const rs = await turso.execute({
