@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import nodemailer from "nodemailer";
+import { turso } from "./storage/db";
 
 // TODO: use a different email provider
 export async function sendEmail(email: string, userId: string) {
@@ -29,13 +30,25 @@ export async function sendEmail(email: string, userId: string) {
   return await transporter.sendMail(mailOptions);
 }
 
-export function authMiddleware(
+export async function authMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  if (!req.headers.authorization) {
+  const { authorization: token } = req.headers;
+  if (!token) {
     return res.status(401).json({ error: "Unauthorized" });
   }
+  if (typeof token !== "string") {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  const rs = await turso.execute({
+    sql: "SELECT id FROM users WHERE token = ?",
+    args: [token],
+  });
+  if (rs.rows.length === 0) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  req.body = { ...req.body, userId: rs.rows[0].id, token };
   next();
 }
