@@ -34,9 +34,9 @@ protectedApi.use("/search", searchRouter);
 protectedApi.use("/like", likesRouter);
 protectedApi.use("/favorite", favoritesRouter);
 
-app.get("*", (_, res) =>
-  res.sendFile(path.join(__dirname, "../client/dist", "index.html"))
-);
+// app.get("*", (_, res) =>
+//   res.sendFile(path.join(__dirname, "../client/dist", "index.html"))
+// );
 
 app.listen(PORT, async () => {
   // await dropTables();

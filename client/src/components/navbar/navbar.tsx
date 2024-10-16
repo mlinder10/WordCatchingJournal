@@ -7,8 +7,11 @@ import { AuthContext } from "../../contexts/AuthProvider";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { VscHeart, VscStarEmpty } from "react-icons/vsc";
 
+type Route = "/" | "/create" | "/search" | "/likes" | "/favorites";
+
 export default function Navbar() {
   const { user } = useContext(AuthContext);
+  const route = window.location.pathname as Route;
 
   return (
     <nav className={styles.nav}>
@@ -22,23 +25,46 @@ export default function Navbar() {
         />
         <span>{user?.username}</span>
       </Link>
-      <Link className={styles.link} to="/">
+      <Link
+        className={`${styles.link} ${route === "/" ? styles.active : null}`}
+        to="/"
+      >
         <FaNewspaper />
         <span>Feed</span>
       </Link>
-      <Link className={styles.link} to="/create">
+      <Link
+        className={`${styles.link} ${
+          route === "/create" ? styles.active : null
+        }`}
+        to="/create"
+      >
         <FaPlus />
         <span>Create</span>
       </Link>
-      <Link className={styles.link} to="/search">
+      <Link
+        className={`${styles.link} ${
+          route === "/search" ? styles.active : null
+        }`}
+        to="/search"
+      >
         <FaMagnifyingGlass />
         <span>Search</span>
       </Link>
-      <Link className={styles.link} to="/likes">
+      <Link
+        className={`${styles.link} ${
+          route === "/likes" ? styles.active : null
+        }`}
+        to="/likes"
+      >
         <VscHeart />
-        <span>Liked</span>
+        <span>Likes</span>
       </Link>
-      <Link className={styles.link} to="/favorites">
+      <Link
+        className={`${styles.link} ${
+          route === "/favorites" ? styles.active : null
+        }`}
+        to="/favorites"
+      >
         <VscStarEmpty />
         <span>Favorites</span>
       </Link>

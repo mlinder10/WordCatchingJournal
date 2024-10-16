@@ -7,11 +7,6 @@ const router = Router();
 router.get("/users/:postId", async (req, res) => {
   try {
     const { limit, offset } = getLimitAndOffset(req);
-
-    if (!limit || !offset) {
-      return res.status(400).json({ error: "Invalid limit or offset" });
-    }
-
     const { postId } = req.params;
     const rs = await turso.execute({
       sql: `
@@ -25,7 +20,7 @@ router.get("/users/:postId", async (req, res) => {
         WHERE f.post_id = ?
         LIMIT ? OFFSET ?
       `,
-      args: [postId],
+      args: [postId, limit, offset],
     });
     return res.status(200).json(rs.rows);
   } catch (err) {
@@ -37,12 +32,8 @@ router.get("/users/:postId", async (req, res) => {
 router.get("/posts/:userId", async (req, res) => {
   try {
     const { limit, offset } = getLimitAndOffset(req);
-
-    if (!limit || !offset) {
-      return res.status(400).json({ error: "Invalid limit or offset" });
-    }
-
     const { userId } = req.params;
+    const { token } = req.body;
     const rs = await turso.execute({
       sql: `
         SELECT
@@ -54,7 +45,11 @@ router.get("/posts/:userId", async (req, res) => {
           p.updated_at as updatedAt,
           p.user_id as userId,
           u.username,
-          u.profile_pic as profilePic
+          u.profile_pic as profilePic,
+          (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as likesCount,
+          (SELECT COUNT(*) FROM favorites WHERE post_id = p.id) as favoritesCount,
+          (SELECT COUNT(*) FROM likes WHERE post_id = p.id AND user_id = (SELECT id FROM users WHERE token = ?)) as liked,
+          (SELECT COUNT(*) FROM favorites WHERE post_id = p.id AND user_id = (SELECT id FROM users WHERE token = ?)) as favorited
         FROM favorites f
         LEFT JOIN posts p
         ON f.post_id = p.id
@@ -63,7 +58,7 @@ router.get("/posts/:userId", async (req, res) => {
         WHERE f.user_id = ?
         LIMIT ? OFFSET ?
       `,
-      args: [userId],
+      args: [token, token, userId, limit, offset],
     });
     return res.status(200).json(rs.rows);
   } catch (err) {

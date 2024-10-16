@@ -17,7 +17,7 @@ export default function Favorites() {
     setError(null);
     try {
       const res = await getApi().get<Post[]>(
-        `/api/favorites/posts/${user?.id}`
+        `/api/favorite/posts/${user?.id}?limit=10&offset=0`
       );
       setPosts(res.data);
     } catch (err) {

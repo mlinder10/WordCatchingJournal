@@ -23,6 +23,9 @@
   border-radius: 0.25rem;
   transition: 0.3s ease-in-out;
 }
+.link.active {
+  background-color: var(--background-tertiary);
+}
 
 .profile {
   border: 1px solid var(--border);

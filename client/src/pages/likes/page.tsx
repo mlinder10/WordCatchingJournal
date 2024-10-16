@@ -16,7 +16,9 @@ export default function Likes() {
     setLoading(true);
     setError(null);
     try {
-      const res = await getApi().get<Post[]>(`/api/likes/posts/${user?.id}`);
+      const res = await getApi().get<Post[]>(
+        `/api/like/posts/${user?.id}?limit=10&offset=0`
+      );
       setPosts(res.data);
     } catch (err) {
       console.error(err);
