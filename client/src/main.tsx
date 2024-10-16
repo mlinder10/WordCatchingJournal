@@ -12,6 +12,8 @@ import Navbar from "./components/navbar/navbar.tsx";
 import Search from "./pages/search/page.tsx";
 import RequestReset from "./pages/auth/request-reset/page";
 import ResetPassword from "./pages/auth/reset-password/page";
+import Likes from "./pages/likes/page.tsx";
+import Favorites from "./pages/favorites/page.tsx";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +72,28 @@ const router = createBrowserRouter([
         <div className="page nav-page">
           <Navbar />
           <Profile />
+        </div>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/likes",
+    element: (
+      <ProtectedRoute>
+        <div className="page nav-page">
+          <Navbar />
+          <Likes />
+        </div>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/favorites",
+    element: (
+      <ProtectedRoute>
+        <div className="page nav-page">
+          <Navbar />
+          <Favorites />
         </div>
       </ProtectedRoute>
     ),

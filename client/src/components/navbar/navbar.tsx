@@ -5,6 +5,7 @@ import ProfilePic from "../profile-pic/profile-pic";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthProvider";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import { VscHeart, VscStarEmpty } from "react-icons/vsc";
 
 export default function Navbar() {
   const { user } = useContext(AuthContext);
@@ -32,6 +33,14 @@ export default function Navbar() {
       <Link className={styles.link} to="/search">
         <FaMagnifyingGlass />
         <span>Search</span>
+      </Link>
+      <Link className={styles.link} to="/likes">
+        <VscHeart />
+        <span>Liked</span>
+      </Link>
+      <Link className={styles.link} to="/favorites">
+        <VscStarEmpty />
+        <span>Favorites</span>
       </Link>
     </nav>
   );
