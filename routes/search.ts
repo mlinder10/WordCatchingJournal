@@ -29,7 +29,10 @@ router.post("/", async (req, res) => {
         `,
         args: [`%${search}%`, limit, offset],
       });
-      values = [...values, ...users.rows];
+      values = [
+        ...values,
+        ...users.rows.map((user) => ({ ...user, type: "user" })),
+      ];
     }
 
     if (filter.includes("words") || filter.length === 0) {
@@ -58,7 +61,10 @@ router.post("/", async (req, res) => {
         args: [userId, userId, `%${search}%`, limit, offset],
       });
 
-      values = [...values, ...postsByWord.rows];
+      values = [
+        ...values,
+        ...postsByWord.rows.map((post) => ({ ...post, type: "post" })),
+      ];
     }
 
     if (filter.includes("definitions") || filter.length === 0) {
@@ -87,7 +93,10 @@ router.post("/", async (req, res) => {
         args: [userId, userId, `%${search}%`, limit, offset],
       });
 
-      values = [...values, ...postsByDefinition.rows];
+      values = [
+        ...values,
+        ...postsByDefinition.rows.map((post) => ({ ...post, type: "post" })),
+      ];
     }
 
     // filter out items with identical ids
