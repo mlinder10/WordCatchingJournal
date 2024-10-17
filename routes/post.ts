@@ -29,6 +29,7 @@ router.get("/", async (req, res) => {
         FROM posts p
         LEFT JOIN users u
         ON p.user_id = u.id
+        ORDER BY p.created_at DESC
         LIMIT ? OFFSET ?
       `,
       args: [token, token, limit, offset],
@@ -66,6 +67,7 @@ router.get("/:userId", async (req, res) => {
         LEFT JOIN users u
         ON p.user_id = u.id
         WHERE p.user_id = ?
+        ORDER BY p.created_at DESC
         LIMIT ? OFFSET ?
       `,
       args: [token, token, userId, limit, offset],
@@ -103,6 +105,7 @@ router.get("/following/:userId", async (req, res) => {
         LEFT JOIN users u
         ON p.user_id = u.id
         WHERE p.user_id IN (SELECT user_id FROM following WHERE following_id = ?)
+        ORDER BY p.created_at DESC
         LIMIT ? OFFSET ?
       `,
       args: [token, token, userId, limit, offset],

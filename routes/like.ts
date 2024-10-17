@@ -56,6 +56,7 @@ router.get("/posts/:userId", async (req, res) => {
         LEFT JOIN users u
         ON p.user_id = u.id
         WHERE l.user_id = ?
+        ORDER BY p.created_at DESC
         LIMIT ? OFFSET ?
       `,
       args: [token, token, userId, limit, offset],
