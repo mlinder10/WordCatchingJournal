@@ -35,17 +35,19 @@ router.post("/login", async (req, res) => {
       return res.status(401).json("Invalid credentials");
     }
 
-    const token = v4();
+    const token = users.rows[0].token ? users.rows[0].token : v4();
 
-    await turso.execute({
-      sql: "UPDATE users SET token = ? WHERE id = ?",
-      args: [token, users.rows[0].id],
-    });
+    if (!users.rows[0].token) {
+      await turso.execute({
+        sql: "UPDATE users SET token = ? WHERE id = ?",
+        args: [token, users.rows[0].id],
+      });
+    }
 
     return res.status(200).json({
       id: users.rows[0].id,
       username: users.rows[0].username,
-      token: token,
+      token,
       profilePic: users.rows[0].profilePic,
     });
   } catch (error) {
