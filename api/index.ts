@@ -15,7 +15,7 @@ import { authMiddleware } from "../utils";
 
 const app = express();
 app.use(cors({ origin: "*" }));
-app.use(express.json());
+app.use(express.json({ limit: "5mb" }));
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
 const PORT = process.env.PORT || 3000;
@@ -33,10 +33,6 @@ protectedApi.use("/users", userRouter);
 protectedApi.use("/search", searchRouter);
 protectedApi.use("/like", likesRouter);
 protectedApi.use("/favorite", favoritesRouter);
-
-// app.get("*", (_, res) =>
-//   res.sendFile(path.join(__dirname, "../client/dist", "index.html"))
-// );
 
 app.listen(PORT, async () => {
   // await dropTables();
