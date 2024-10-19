@@ -104,4 +104,20 @@ router.get("/:userId/:localUserId", async (req, res) => {
   }
 });
 
+router.patch("/:userId", async (req, res) => {
+  try {
+    const { username, profilePic } = req.body;
+
+    const rs = await turso.execute({
+      sql: "UPDATE users SET username = ?, profile_pic = ? WHERE id = ?",
+      args: [username, profilePic, req.params.userId],
+    });
+
+    return res.status(200).json("Success");
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json(err);
+  }
+});
+
 export default router;
