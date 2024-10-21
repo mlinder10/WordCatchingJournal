@@ -1,0 +1,21 @@
+.input {
+  display: none;
+}
+
+.label {
+  position: relative;
+  background-color: #ddd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 5px #ddd;
+  font-weight: bold;
+  color: #444;
+}
+
+.icon {
+  position: absolute;
+  color: #5553;
+}

@@ -39,13 +39,22 @@ button.follow {
 .sub-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding-inline: 1rem;
   padding-block: 0.5rem;
   background-color: var(--background-secondary);
   border-bottom: 1px solid var(--border);
 }
 
-.edit-btn,
+.edit-btn {
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-decoration: none;
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
 .logout-btn,
 .follow-btn {
   font-size: 0.8rem;

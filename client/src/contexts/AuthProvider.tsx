@@ -11,6 +11,7 @@ import { getApi } from "../utils";
 
 type AuthContextType = {
   user: User | null;
+  updateUser: (user: User | null) => void;
   authLoading: boolean;
   checkToken: () => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
@@ -24,6 +25,7 @@ type AuthContextType = {
 
 const defaultAuthContext = {
   user: null,
+  updateUser: () => {},
   authLoading: true,
   checkToken: async () => {},
   login: async () => {},
@@ -40,6 +42,10 @@ type AuthProviderProps = {
 export default function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
+
+  function updateUser(user: User | null) {
+    setUser(user);
+  }
 
   async function login(email: string, password: string) {
     const res = await getApi().post("/api/auth/login", { email, password });
@@ -92,7 +98,15 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
   return (
     <AuthContext.Provider
-      value={{ user, authLoading, login, register, logout, checkToken }}
+      value={{
+        user,
+        updateUser,
+        authLoading,
+        login,
+        register,
+        logout,
+        checkToken,
+      }}
     >
       {children}
     </AuthContext.Provider>

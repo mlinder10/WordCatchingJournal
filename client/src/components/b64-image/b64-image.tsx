@@ -29,7 +29,7 @@ export default function B64Image({
       style={{
         maxWidth: "100%",
         maxHeight: "100%",
-        objectFit: "contain",
+        objectFit: "fill",
         ...style,
       }}
     />

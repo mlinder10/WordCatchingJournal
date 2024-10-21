@@ -26,7 +26,7 @@ export default function ProfilePic({
     <B64Image
       data={profilePic}
       type="png"
-      style={{ width: size, height: size }}
+      style={{ width: size, height: size, borderRadius: "100%" }}
     />
   );
 }

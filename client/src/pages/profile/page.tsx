@@ -4,7 +4,7 @@ import { Post, User } from "../../types";
 import LoadableData from "../../components/loadable-data/loadable-data";
 import PostView from "../../components/post-view/post-view";
 import ProfilePic from "../../components/profile-pic/profile-pic";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthProvider";
 import FollowModal from "./follow-modal";
 import { FaEdit, FaSignOutAlt } from "react-icons/fa";
@@ -170,14 +170,10 @@ function EditProfileButtons() {
 
   return (
     <div className={styles["sub-header"]}>
-      <BorderedButton
-        type="secondary"
-        onClick={() => {}}
-        className={styles["edit-btn"]}
-      >
+      <Link to="/edit-profile" className={styles["edit-btn"]}>
         <FaEdit />
         <span>Edit Profile</span>
-      </BorderedButton>
+      </Link>
       <BorderedButton onClick={logout} className={styles["logout-btn"]}>
         <FaSignOutAlt />
         <span>Logout</span>
