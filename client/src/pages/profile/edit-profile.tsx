@@ -3,6 +3,7 @@ import Base64ImageUploader from "../../components/b64-image/b64-image-uploader";
 import styles from "./edit-profile.module.css";
 import { AuthContext } from "../../contexts/AuthProvider";
 import { getApi } from "../../utils";
+import LoadingButton from "../../components/loading-button/loading-button";
 
 export default function EditProfile() {
   const { user, updateUser } = useContext(AuthContext);
@@ -48,7 +49,13 @@ export default function EditProfile() {
         onChange={(e) => setUsername(e.target.value)}
       />
       <div>
-        <button onClick={handleSave}>Save</button>
+        <LoadingButton
+          type="primary"
+          onClick={handleSave}
+          loading={saveLoading}
+        >
+          Save
+        </LoadingButton>
         <button onClick={handleDiscard}>Discard</button>
       </div>
     </div>
