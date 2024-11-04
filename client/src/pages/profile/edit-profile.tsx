@@ -26,7 +26,8 @@ export default function EditProfile() {
     setSaveLoading(true);
     setSaveError(null);
     try {
-      const res = await getApi().patch(`/api/users/${user.id}`, {
+      // TODO: do something with
+      await getApi().patch(`/api/users/${user.id}`, {
         username,
         profilePic: imgData,
       });
@@ -34,6 +35,7 @@ export default function EditProfile() {
     } catch (err) {
       console.error(err);
       setSaveError("Error saving changes");
+      console.log(saveError); // TODO: remove
     } finally {
       setSaveLoading(false);
     }
